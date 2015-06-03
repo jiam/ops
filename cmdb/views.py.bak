@@ -1,0 +1,26 @@
+# --*-- coding: utf-8 --*--
+from django.shortcuts import render
+from django.http import HttpResponse
+import json
+import urllib
+
+from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt  
+def index(request):
+    #data = 'hellow world'
+    data = {"total":2,"data":[{"age":"32","married":"1","id":"51092eae-4a8f-4441-909c-5326868a35ae","country":"cn","loginname":"jiam","gender":"1"},{"age":"32","married":"1","id":"51092eae-4a8f-4441-909c-5326868a35af","country":"cn","loginname":"jiamn","gender":"1"}]}
+    data = json.dumps(data)
+    return HttpResponse(data)
+def idc(request):
+    return render(request,'idc.html',{}) 
+def idc_add(request):
+    return render(request,'idc_add.html',{}) 
+@csrf_exempt
+def update(request):
+    if request.method == 'POST':
+        #json_str = urllib.unquote(request.body)
+        #data = json_str.replace('=',':')
+        json_str = request.body
+        data = json.loads(json_str)[0]
+        #loginname = data['loginname']
+        return HttpResponse(data['id'])

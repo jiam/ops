@@ -1,0 +1,6 @@
+[
+    { "id": "ip", "text": "IP" },
+    { "id": "hostname", "text": "主机名" },
+    { "id": "sn", "text": "序列号" },
+    { "id": "asset_sn", "text": "资产编号" },
+]

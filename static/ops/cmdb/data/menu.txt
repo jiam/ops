@@ -1,0 +1,30 @@
+﻿[
+	{ id: "object", text: "DashBoard"},
+
+	{ id: "object", text: "对象管理"},
+	{ id: "idc", pid: "object", text: "IDC", url: "../html/object_idc.html" },
+	{ id: "rack", pid: "object", text: "机柜", url: "../html/object_rack.html" },
+	{ id: "vendor", pid: "object", text: "厂商", url: "../html/object_vendor.html" },
+	{ id: "model", pid: "object", text: "型号", url: "../html/object_model.html" },
+	{ id: "cpu", pid: "object", text: "CPU", url: "../html/object_cpu.html" },
+	{ id: "memory", pid: "object", text: "内存", url: "../html/object_memory.html" },
+	{ id: "disk", pid: "object", text: "硬盘", url: "../html/object_disk.html" },
+	{ id: "raid", pid: "object", text: "RAID", url: "../html/object_raid.html" },
+	{ id: "os", pid: "object", text: "OS", url: "../html/object_os.html" },
+	{ id: "kernel", pid: "object", text: "Kernel", url: "../html/object_kernel.html" },
+	{ id: "service", pid: "object", text: "业务", url: "../html/object_service.html" },
+	{ id: "department", pid: "object", text: "部门", url: "../html/object_department.html" },
+	{ id: "zone", pid: "object", text: "区域", url: "../html/object_zone.html" },
+
+	{ id: "host", text: "主机管理"},
+	{ id: "physical_server", pid: "host", text: "物理服务器", url: "../html/host_physical.html" },
+	{ id: "virtual_server", pid: "host", text: "虚拟服务器", url: "../html/host_virtual.html" },
+	{ id: "storage_server", pid: "host", text: "存储服务器", url: "../html/host_storage.html" },
+
+		
+	{ id: "user", text: "用户管理"},
+	{ id: "addRight", pid: "user", text: "用户权限",  url: "http://10.100.30.174/cmdb/user" },
+	{ id: "log", text: "日志管理"},
+	{ id: "login", pid: "log", text: "登录日志",  url: "../html/login_log.html"},		
+	{ id: "op", pid: "log", text: "操作日志",  url: "../html/building.html"}		
+]

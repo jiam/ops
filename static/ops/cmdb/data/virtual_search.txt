@@ -1,0 +1,5 @@
+[
+    { "id": "ip", "text": "IP" },
+    { "id": "hostname", "text": "主机名" },
+    { "id": "physical_host_ip", "text": "宿主机IP" },
+]

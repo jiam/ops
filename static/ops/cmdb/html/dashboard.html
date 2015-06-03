@@ -1,0 +1,78 @@
+<html>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<head>
+   <link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css" rel="stylesheet">
+   <script type="text/javascript" src="http://cdn.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
+   <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>
+   <script>
+$(document).ready(function() {
+    var options = {
+        title: {
+            text: '主机统计'
+        },
+        chart: {
+            renderTo: 'container',
+            type: 'column'
+        },
+        xAxis: {
+           categories: []
+        },
+        series: [{
+            name: '主机数量',
+            data: []
+        }]
+    };
+ var url =  "http://10.100.30.174/cmdb/dashboard/host";
+    $.getJSON(url,  function(data) {
+        options.series[0].data = data["y"];
+        options.xAxis.categories =  data["x"];
+        var chart = new Highcharts.Chart(options);
+    });
+});
+$(document).ready(function() {
+    var options = {
+        title: {
+            text: '操作系统'
+        },
+        chart: {
+            renderTo: 'container2',
+            type: 'pie'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.2f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: '数量',
+            data: []
+        }]
+    };
+ var url =  "http://10.100.30.174/cmdb/dashboard/os";
+    $.getJSON(url,  function(data) {
+        options.series[0].data = data 
+        var chart = new Highcharts.Chart(options);
+    });
+});
+    
+
+</script>
+</head>
+
+<body>
+  <div class="row">
+        <div id = "container" class="span6">
+        </div>
+        <div id = "container2"class="span6">
+       </div>
+  </div>
+</body>
+</html>

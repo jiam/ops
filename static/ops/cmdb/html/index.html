@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>cmdb</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" /><link href="../css/demo.css" rel="stylesheet" type="text/css" />
+
+    
+    <script src="../../scripts/boot.js" type="text/javascript"></script> 
+    <script type="text/javascript">
+         $.ajax({
+                url: "http://10.100.30.174/cmdb/islogin",
+                success: function (text) {
+                    var o = mini.decode(text);
+                    if (o.result == 'fail') {
+                        window.location = "http://10.100.30.174/ops/cmdb/html/login.html";
+                    }
+                }
+             });
+    </script>
+<style type="text/css">
+    html, body{
+        margin:0;padding:0;border:0;width:100%;height:100%;overflow:hidden;
+    }
+
+    .logo
+    {
+        font-family:"微软雅黑",	"Helvetica Neue",​Helvetica,​Arial,​sans-serif;
+        font-size:28px;font-weight:bold;color:#444;        
+        cursor:default;
+        position:absolute;top:28px;left:15px; line-height:28px;       
+    }    
+    .topNav
+    {
+        position:absolute;right:8px;top:10px;        
+        font-size:12px;
+        line-height:25px;
+    }
+    .topNav a
+    {
+        text-decoration:none;
+        color:#222;
+        font-weight:normal;
+        font-size:12px;
+        line-height:25px;
+        margin-left:3px;
+        margin-right:3px;
+    }
+    .topNav a:hover
+    {
+        text-decoration:underline;
+        color:Blue;
+    }   
+     .mini-layout-region-south img
+    {
+        vertical-align:top;
+    }
+</style>
+
+</head>
+<body >   
+
+<div id="layout1" class="mini-layout" style="width:100%;height:100%;">
+      <div title="north" region="north" class="app-header" bodyStyle="overflow:hidden;" height="80" showHeader="false" showSplit="false">
+ 
+        <div class="logo">CMDB</div>
+        <div class="topNav">    
+            当前用户:<a href="#"><label id="user"/></a> | 
+            <a href="http://10.100.30.174/cmdb/logout">退出</a> 
+            <script type="text/javascript">
+               $.ajax({
+                url: "http://10.100.30.174/cmdb/getuserinfo",
+                success: function (text) {
+                    //var o = mini.decode(text);
+                    $("#user").html(text);
+                      }
+             });
+            </script>
+            
+        </div>
+     </div>
+
+    <div title="south" region="south" showSplit="false" showHeader="false" height="30" >
+        <div style="line-height:28px;text-align:center;cursor:default">Copyright © 宜信 </div>
+    </div>
+    <div showHeader="false" region="west" width="180" maxWidth="250" minWidth="100" >
+        <!--OutlookMenu-->
+        <div id="leftTree" class="mini-outlookmenu" url="../data/menu.txt" onitemselect="onItemSelect"
+            idField="id" parentField="pid" textField="text" borderStyle="border:0" 
+        >
+        </div>
+
+    </div>
+    <div title="center" region="center" bodyStyle="overflow:hidden;">
+     <iframe id="mainframe" frameborder="0" name="main" style="width:100%;height:100%;" border="0"></iframe>
+    </div>
+</div>
+    
+    <script type="text/javascript">
+        mini.parse();
+
+        //init iframe src
+        var iframe = document.getElementById("mainframe");
+        iframe.src = "./dashboard.html"
+
+        function onItemSelect(e) {
+            var item = e.item;
+            iframe.src = item.url;
+        }
+
+//        //自动选中id
+//        var tree = mini.get("leftTree");
+//        
+//        tree.selectNode("addRight");
+    </script>
+
+</body>
+</html>

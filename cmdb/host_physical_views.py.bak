@@ -1,0 +1,211 @@
+# --*-- coding: utf-8 --*--
+from django.shortcuts import render
+from django.http import HttpResponse
+from cmdb.models import *
+import json
+import urllib
+
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt  
+def physical_get(request):
+    data = request.POST.get('key','all')
+    physical_list = []
+    if data == 'all':
+        physicals = HostPhysical.objects.select_related().all()
+        for physical in physicals:
+            physical_d = {'id':physical.id,
+                          'HostName':physical.HostName,
+                          'Status':physical.Status,
+                          'Asset_SN':physical.Asset_SN,
+                          'SN':physical.SN,
+                          'Vendor_id':physical.vendor.Vendor_Name,
+                          'Service_id':physical.service.Service_Name,
+                          'Model_id':physical.model.Model_Name,
+                          'Manage_IP':physical.Manage_IP,
+                          'RAC_IP':physical.RAC_IP,
+                          'IDC_id':physical.idc.IDC_Name,
+                          'Rack_id':physical.rack.Rack_Name,
+                          }            
+            physical_list.append(physical_d)
+        data = {"total":len(physical_list),"data":physical_list}
+        json_r = json.dumps(data)
+    elif data == 'id':
+        id = request.POST.get('id')
+        physical = HostPhysical.objects.get(id=id)
+        physical_d = {'id':physical.id,
+                      'HostName':physical.HostName,
+                      'Status':physical.Status,
+                      'Asset_SN':physical.Asset_SN,
+                      'SN':physical.SN,
+                      'Vendor_id':physical.vendor.id,
+                      'Model_id':physical.model.id,
+                      'OS_id':physical.os.id,
+                      'Kernel_id':physical.kernel.id,
+                      'Service_id':physical.service.id,
+                      'Department_id':physical.department.id,
+                      'IDC_id':physical.idc.id,
+                      'Zone_id':physical.zone.id,
+                      'Rack_id':physical.rack.id,
+                      'Rack_Position':physical.Rack_Position,
+                      'Manage_IP':physical.Manage_IP,
+                      'RAC_IP':physical.RAC_IP,
+                      'CPU_id':physical.cpu.id,
+                      'CPU_Number':physical.CPU_Number,
+                      'Memory_id':physical.memory.id,
+                      'Memory_Number':physical.Memory_Number,
+                      'Disk_id':physical.disk.id,
+                      'Disk_Number':physical.Disk_Number,
+                      'RAID_id':physical.raid.id,
+                      'RAID_Battery':physical.RAID_Battery,
+                      'Purchasing_Time':str(physical.Purchasing_Time),
+                      'Guarantee_Time':str(physical.Guarantee_Time),
+                      'Change_Time':str(physical.Change_Time),
+                      'Up_Time':str(physical.Up_Time),
+                      'Change_Info':physical.Change_Info,
+                      'Remarks':physical.Remarks
+                      }            
+        json_r = json.dumps(physical_d)
+    else:
+        physicals= HostPhysical.objects.filter(HostName__contains=data)
+        for physical in physicals:
+            physical_d = {'id':physical.id,
+                          'HostName':physical.HostName,
+                          'Status':physical.Status,
+                          'Asset_SN':physical.Asset_SN,
+                          'SN':physical.SN,
+                          'Vendor_id':physical.vendor.Vendor_Name,
+                          'Service_id':physical.service.Service_Name,
+                          'Model_id':physical.model.Model_Name,
+                          'Manage_IP':physical.Manage_IP,
+                          'RAC_IP':physical.RAC_IP,
+                          'IDC_id':physical.idc.IDC_Name,
+                          'Rack_id':physical.rack.Rack_Name,
+                          }            
+            physical_list.append(physical_d)
+        data = {"total":len(physical_list),"data":physical_list}
+        json_r = json.dumps(data)
+    return HttpResponse(json_r)
+
+@csrf_exempt
+def physical_search(request):
+    json_str =request.body
+    data = json.loads(json_str)
+    key = data['key']
+    if key == 'id':
+        physical = Rack.objects.get(id=data['id'])
+        physical_d = {'IDC_id':physical.idc.id,'Rack_Name':physical.Rack_Name,'id':physical.id}
+        json_r = json.dumps(physical_d)
+    if key == 'Rack_Name':
+        physical_r = list(Rack.objects.filter(Rack_Name__contains=data['Rack_Name']).values())[0]
+        json_r = json.dumps(physical_r)
+    return HttpResponse(json_r)
+
+@csrf_exempt  
+def physical_save(request):
+    json_str = request.body
+    data = json.loads(json_str)
+    if  data['id']:
+        h = HostPhysical.objects.filter(id=data['id'])
+        vendor = Vendor.objects.get(id=data['Vendor_id'])
+        model = Model.objects.get(id=data['Model_id'])
+        os = OS.objects.get(id=data['OS_id'])
+        kernel = Kernel.objects.get(id=data['Kernel_id'])
+        service = Service.objects.get(id=data['Service_id'])
+        department = Department.objects.get(id=data['Department_id'])
+        idc = IDC.objects.get(id=data['IDC_id'])
+        rack = Rack.objects.get(id=data['Rack_id'])
+        cpu = CPU.objects.get(id=data['CPU_id'])
+        memory = Memory.objects.get(id=data['Memory_id'])
+        disk = Disk.objects.get(id=data['Disk_id'])
+        raid = RAID.objects.get(id=data['RAID_id'])
+        zone = Zone.objects.get(id=data['Zone_id'])
+        h.update(SN = data['SN'],
+             Asset_SN = data['Asset_SN'],
+             vendor = vendor,
+             model = model,
+             HostName = data['HostName'],
+             os = os,
+             kernel = kernel,
+             service = service,
+             department = department,
+             idc = idc,
+             rack = rack,
+             Rack_Position = data['Rack_Position'],
+             cpu = cpu,
+             CPU_Number = data['CPU_Number'],           
+             memory = memory,
+             Memory_Number = data['Memory_Number'],
+             disk = disk,
+             Disk_Number = data['Disk_Number'],
+             raid = raid,
+             RAID_Battery = data['RAID_Battery'],
+             Status = data['Status_id'],
+             zone = zone,
+             Manage_IP = data['Manage_IP'],
+             RAC_IP = data['RAC_IP'],
+             Purchasing_Time = data['Purchasing_Time'][0:10],
+             Guarantee_Time = data['Guarantee_Time'][0:10],
+             Change_Time = data['Change_Time'][0:10],
+             Up_Time = data['Up_Time'][0:10],
+             Change_Info = data['Change_Info'],
+             Remarks = data['Remarks']
+                 )
+	return HttpResponse(h)
+    else:
+        vendor = Vendor.objects.get(id=data['Vendor_id'])
+        model = Model.objects.get(id=data['Model_id'])
+        os = OS.objects.get(id=data['OS_id'])
+        kernel = Kernel.objects.get(id=data['Kernel_id'])
+        service = Service.objects.get(id=data['Service_id'])
+        department = Department.objects.get(id=data['Department_id'])
+        idc = IDC.objects.get(id=data['IDC_id'])
+        rack = Rack.objects.get(id=data['Rack_id'])
+        cpu = CPU.objects.get(id=data['CPU_id'])
+        memory = Memory.objects.get(id=data['Memory_id'])
+        disk = Disk.objects.get(id=data['Disk_id'])
+        raid = RAID.objects.get(id=data['RAID_id'])
+        zone = Zone.objects.get(id=data['Zone_id'])
+        h = HostPhysical(SN = data['SN'],
+             Asset_SN = data['Asset_SN'],
+             vendor = vendor,
+             model = model,
+             HostName = data['HostName'],
+             os = os,
+             kernel = kernel,
+             service = service,
+             department = department,
+             idc = idc,
+             rack = rack,
+             Rack_Position = data['Rack_Position'],
+             cpu = cpu,
+             CPU_Number = data['CPU_Number'],
+             memory = memory,
+             Memory_Number = data['Memory_Number'],
+             disk = disk,
+             Disk_Number = data['Disk_Number'],
+             raid = raid,
+             RAID_Battery = data['RAID_Battery'],
+             Status = data['Status_id'],
+             zone = zone,
+             Manage_IP = data['Manage_IP'],
+             RAC_IP = data['RAC_IP'],
+             Purchasing_Time = data['Purchasing_Time'][0:10],
+             Guarantee_Time = data['Guarantee_Time'][0:10],
+             Change_Time = data['Change_Time'][0:10],
+             Up_Time = data['Up_Time'][0:10],
+             Change_Info = data['Change_Info'],
+             Remarks = data['Remarks']
+                 )
+	h.save()
+	return HttpResponse(data['RAID_Battery'])
+
+@csrf_exempt
+def physical_del(request):
+    json_str =request.body
+    data = json.loads(json_str)
+    ids = data['id']
+    for del_id in ids:
+        i = HostPhysical.objects.filter(id=del_id)
+        i.delete()
+    return HttpResponse("physical delete sucess")

@@ -1,0 +1,7 @@
+[
+    { "id": "0", "text": "无" },
+    { "id": "1", "text": "RAID 0" },
+    { "id": "2", "text": "RAID 1" },
+    { "id": "3", "text": "RAID 5" },
+    { "id": "3", "text": "RAID 10" },
+]

@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>虚拟主机</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+    <script src="../../scripts/boot.js" type="text/javascript"></script>
+    
+
+    <style type="text/css">
+    html, body
+    {
+        font-size:12px;
+        padding:0;
+        margin:0;
+        border:0;
+        height:100%;
+        overflow:hidden;
+    }
+    </style>
+</head>
+<body>    
+     
+    <form id="form1" method="post">
+        <input name="id" class="mini-hidden" />
+         <fieldset style="border:solid 1px #aaa;padding:3px;">
+             <legend >基本信息</legend>
+             <div style="padding:5px;">
+         <table>
+                <tr>
+                    <td style="width:90px;">主机名：</td>
+                    <td style="width:200px;">
+                         <input name="HostName" class="mini-textbox"  value="localhost" required="true"/>
+                    </td>
+                    <td style="width:90px;">状态：</td>
+                    <td style="width:200px;">    
+                        <input name="Status_id" class="mini-combobox" url="../data/status.txt" 
+                    </td>
+                </tr>
+                <tr>
+                <tr>
+                    <td style="width:90px;">系统名称：</td>
+                    <td style="width:200px;">
+                        <input name="OS_id" class="mini-combobox" valueField="id" textField="OS_Name" 
+                          url="http://10.100.30.174/cmdb/object/os/get"
+                          required="true"
+                        />
+                    </td>
+                    <td style="width:90px;">内核版本：</td>
+                    <td style="width:200px;">    
+                        <input name="Kernel_id" class="mini-combobox" valueField="id" textField="Kernel_Name" 
+                          url="http://10.100.30.174/cmdb/object/kernel/get"
+                          required="true"
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:90px;">用途：</td>
+                    <td style="width:200px;">
+                         <input name="Use_Info" class="mini-textbox" />
+                    </td>
+                    <td style="width:90px;">部署路径：</td>
+                    <td style="width:200px;">    
+                         <input name="Deploy_Path" class="mini-textbox"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:90px;">业务名称：</td>
+                    <td style="width:200px;">
+                        <input name="Service_id" class="mini-combobox" valueField="id" textField="Service_Name" 
+                          url="http://10.100.30.174/cmdb/object/service/get"
+                          required="true"
+                        />
+                    </td>
+                    <td style="width:90px;">部门名称：</td>
+                    <td style="width:200px;">    
+                        <input name="Department_id" class="mini-combobox" valueField="id" textField="Department_Name" 
+                          url="http://10.100.30.174/cmdb/object/department/get"
+                          required="true"
+                        />
+                    </td>
+                    <td style="width:90px;">使用者：</td>
+                    <td style="width:100px;">
+                         <input name="User" class="mini-textbox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:90px;">管理IP：</td>
+                    <td style="width:200px;">
+                         <input name="Manage_IP" class="mini-textbox" required="true"/>
+                    </td>
+                    <td style="width:90px;">宿主机IP：</td>
+                    <td style="width:200px;">    
+                         <input name="Physical_Host_IP" class="mini-textbox" value="0.0.0.0"  required="true"/>
+                    </td>
+                    <td style="width:90px;">SSH端口：</td>
+                    <td style="width:100px;">    
+                         <input name="SSH_Port" class="mini-textbox" value="22"  required="true"/>
+                    </td>
+                </tr>
+                
+         </table>
+             </div>
+         </fieldset>
+         <fieldset style="border:solid 1px #aaa;padding:3px;">
+             <legend >硬件信息</legend>
+             <div style="padding:5px;">
+         <table>
+                <tr>
+                    <td style="width:90px;">vCPU个数：</td>
+                    <td style="width:100px;">    
+                         <input name="vCPU_Number" class="mini-textbox" style="width:60px" required="true" />
+                    </td>
+                    <td style="width:90px;">内存容量：</td>
+                    <td style="width:80px;">    
+                        <input name="Memory_Size"  style="width:60px" class="mini-textbox" required="true"/>
+                    </td>
+                    <td style="width:90px;">硬盘容量：</td>
+                    <td style="width:80px;">    
+                        <input name="Disk_Size" style="width:60px" class="mini-textbox" required="true"/>
+                    </td>
+                </tr>
+                
+         </table>
+             </div>
+         </fieldset>
+         <fieldset style="border:solid 1px #aaa;padding:3px;">
+               <legend >其他信息</legend>
+               <div style="padding:5px;">
+        <table>
+               <tr>
+                   <td style="width:90px">申请日期：</td>
+                   <td style="width:200px">    
+                        <input name="Application_Time" class="mini-datepicker"  value="2015-01-01" emptyText="请选择日期"/>
+                   </td>
+                   <td style="width:90px">开通日期：</td>
+                   <td style="width:200px">    
+                        <input name="Up_Time" class="mini-datepicker"  value="2015-01-01" emptyText="请选择日期"/>
+                   </td>
+               </tr>
+               <tr>
+                   <td style="width:90px">使用期限：</td>
+                   <td style="width:200px">    
+                        <input name="Use_Period" class="mini-textbox"  value="长期" emptyText="请选择日期"/>
+                   </td>
+                   <td style="width:90px">变更日期：</td>
+                   <td style="width:200px">    
+                        <input name="Change_Time" class="mini-datepicker"  value="2015-01-01" emptyText="请选择日期"/>
+                   </td>
+               </tr>
+               <tr>
+                   <td >变更说明：</td>
+                   <td colspan="3">    
+                        <input name="Change_Info" class="mini-textarea" style="width:350px"/>
+                   </td>
+               </tr>
+               <tr>
+                   <td> 备注：</td>
+                   <td colspan="3">    
+                        <input name="Remarks" class="mini-textarea" style="width:350px"/>
+                   </td>
+               </tr>
+
+        </table>
+               </div>
+       </fieldset>
+
+        <div style="text-align:center;padding:10px;">               
+            <a class="mini-button" onclick="onOk" style="width:60px;margin-right:20px;">确定</a>       
+            <a class="mini-button" onclick="onCancel" style="width:60px;">取消</a>       
+        </div>        
+    </form>
+    <script type="text/javascript">
+        mini.parse();
+
+        var form = new mini.Form("form1");
+
+        function SaveData() {
+            var o = form.getData();            
+
+            form.validate();
+            if (form.isValid() == false) return;
+
+            var json = mini.encode(o);
+            $.ajax({
+                url: "http://10.100.30.174/cmdb/host/virtual/save",
+		type: 'post',
+                data: json,
+                cache: false,
+                success: function (text) {
+                    o = mini.decode(text);
+                    if (o.result == 'no permission') alert("没有权限!!");
+                    CloseWindow("save");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(jqXHR.responseText);
+                    CloseWindow();
+                }
+            });
+        }
+
+        ////////////////////
+        //标准方法接口定义
+        function SetData(data) {
+            if (data.action == "edit") {
+                //跨页面传递的数据对象，克隆后才可以安全使用
+                data = mini.clone(data);
+                 //var json_post  = mini.encode({'key':'id','id':data.id})
+
+                $.ajax({
+                    url: "http://10.100.30.174/cmdb/host/virtual/get",
+                    type: 'post',
+                    data: {'key':'id','id':data.id},
+                    cache: false,
+                    success: function (text) {
+                       var o = mini.decode(text);
+                       form.setData(o);
+                       mini.getbyName("Status_id").setValue(o.Status_id);
+                       mini.getbyName("OS_id").setValue(o.OS_id);
+                       mini.getbyName("Kernel_id").setValue(o.Kernel_id);
+                       mini.getbyName("Service_id").setValue(o.Service_id);
+                       mini.getbyName("Department_id").setValue(o.Department_id);
+                       
+                    }
+                });
+            }
+        }
+
+        function GetData() {
+            var o = form.getData();
+            return o;
+        }
+        function CloseWindow(action) {            
+            if (action == "close" && form.isChanged()) {
+                if (confirm("数据被修改了，是否先保存？")) {
+                    return false;
+                }
+            }
+            if (window.CloseOwnerWindow) return window.CloseOwnerWindow(action);
+            else window.close();            
+        }
+        function onOk(e) {
+            SaveData();
+        }
+        function onCancel(e) {
+            CloseWindow("cancel");
+        }
+        //////////////////////////////////
+        function onIDCChanged(e) {
+            var IDCCombo = mini.getbyName("IDC_id")
+            var ZoneCombo =  mini.getbyName("Zone_id")
+            var IDC_id = IDCCombo.getValue();
+            ZoneCombo.load("http://10.100.30.174/cmdb/object/zone/get/" + IDC_id);
+            ZoneCombo.setValue("");
+        }
+        function onVendorChanged(e) {
+            var VendorCombo = mini.getbyName("Vendor_id")
+            var ModelCombo =  mini.getbyName("Model_id")
+            var Vendor_id = VendorCombo.getValue();
+            ModelCombo.load("http://10.100.30.174/cmdb/object/model/get/" + Vendor_id);
+            ModelCombo.setValue("");
+        }
+
+
+
+    </script>
+</body>
+</html>

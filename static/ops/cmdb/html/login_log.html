@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>登录日志</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <link href="../css/demo.css" rel="stylesheet" type="text/css" />
+
+    <script src="../../scripts/boot.js" type="text/javascript"></script>
+    <script type="text/javascript">
+         $.ajax({
+                url: "http://10.100.30.174/cmdb/islogin",
+                success: function (text) {
+                    var o = mini.decode(text);
+                    if (o.result == 'fail') {
+                        window.location = "http://10.100.30.174/ops/cmdb/html/login.html";
+                    }
+                }
+             });
+    </script>
+</head>
+<body>
+    <div style="width:800px;">
+        <div class="mini-toolbar" style="border-bottom:0;padding:0px;">
+            <table style="width:100%;">
+                <tr>
+                    <td style="width:100%;">
+                    </td>
+                    <td style="white-space:nowrap;">
+                        <input id="search" class="mini-textbox" emptyText="请输入用户名" style="width:150px;" onenter="onKeyEnter"/>   
+                        <a class="mini-button" onclick="search()">查询</a>
+                    </td>
+                </tr>
+            </table>           
+        </div>
+    </div>
+    <div id="datagrid1" class="mini-datagrid" style="width:800px;height:280px;" allowResize="true"
+        url="http://10.100.30.174/cmdb/loginlog/get"  idField="id" multiSelect="true" 
+    >
+        <div property="columns">
+            <!--<div type="indexcolumn"></div>        -->
+            <div type="checkcolumn" ></div>        
+            <div field="user" width="120" headerAlign="center" allowSort="true">用户名</div>    
+            <div field="message" width="100" headerAlign="center"  allowSort="true">信息</div>
+            <div field="action_time" width="100" headerAlign="center"  allowSort="true">时间</div>
+        </div>
+    </div>
+    
+
+    <script type="text/javascript">
+        mini.parse();
+
+        var grid = mini.get("datagrid1");
+        grid.load();
+        grid.sortBy("action_time","desc");
+
+        function search() {
+            var key = 'user';
+            var search = mini.get("search").getValue();
+            grid.load({ key: key,search: search });
+        }
+        function onKeyEnter(e) {
+            search();
+        }
+
+    </script>
+
+    <div class="description">
+        
+    </div>
+</body>
+</html>

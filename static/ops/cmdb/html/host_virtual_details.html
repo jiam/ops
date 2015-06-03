@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>虚拟主机</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+    <script src="../../scripts/boot.js" type="text/javascript"></script>
+    
+
+    <style type="text/css">
+    html, body
+    {
+        font-size:12px;
+        padding:0;
+        margin:0;
+        border:0;
+        height:100%;
+        overflow:hidden;
+    }
+    </style>
+</head>
+<body>    
+         <fieldset style="border:solid 1px #aaa;padding:3px;">
+             <legend >基本信息</legend>
+             <div style="padding:5px;">
+         <table>
+                <tr>
+                    <td style="width:90px;">主机名：</td>
+                    <td style="width:200px;">
+                         <label id="HostName" />
+                    </td>
+                    <td style="width:90px;">状态：</td>
+                    <td style="width:200px;">    
+                        <label id="Status" /> 
+                    </td>
+                </tr>
+                <tr>
+                <tr>
+                    <td style="width:90px;">系统名称：</td>
+                    <td style="width:200px;">
+                        <label id="OS_id"  />
+                    </td>
+                    <td style="width:90px;">内核版本：</td>
+                    <td style="width:200px;">    
+                        <label id="Kernel_id" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:90px;">用途：</td>
+                    <td style="width:200px;">
+                         <label id="Use_Info" />
+                    </td>
+                    <td style="width:90px;">部署路径：</td>
+                    <td style="width:200px;">    
+                         <label id ="Deploy_Path" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:90px;">业务名称：</td>
+                    <td style="width:200px;">
+                        <label id="Service_id" />
+                    </td>
+                    <td style="width:90px;">部门名称：</td>
+                    <td style="width:200px;">    
+                        <label id="Department_id"  />
+                    </td>
+                    <td style="width:90px;">使用者：</td>
+                    <td style="width:100px;">
+                         <label id="User"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:90px;">管理IP：</td>
+                    <td style="width:200px;">
+                         <label id="Manage_IP"/>
+                    </td>
+                    <td style="width:90px;">宿主机IP：</td>
+                    <td style="width:200px;">    
+                         <label id="Physical_Host_IP" />
+                    </td>
+                    <td style="width:90px;">SSH端口：</td>
+                    <td style="width:100px;">    
+                         <label id="SSH_Port"/>
+                    </td>
+                </tr>
+                
+         </table>
+             </div>
+         </fieldset>
+         <fieldset style="border:solid 1px #aaa;padding:3px;">
+             <legend >硬件信息</legend>
+             <div style="padding:5px;">
+         <table>
+                <tr>
+                    <td style="width:90px;">vCPU个数：</td>
+                    <td style="width:100px;">    
+                         <label id="vCPU_Number" />
+                    </td>
+                    <td style="width:90px;">内存容量：</td>
+                    <td style="width:80px;">    
+                        <label id="Memory_Size" />
+                    </td>
+                    <td style="width:90px;">硬盘容量：</td>
+                    <td style="width:80px;">    
+                        <label id="Disk_Size" style="width:60px" required="true"/>
+                    </td>
+                </tr>
+                
+         </table>
+             </div>
+         </fieldset>
+         <fieldset style="border:solid 1px #aaa;padding:3px;">
+               <legend >其他信息</legend>
+               <div style="padding:5px;">
+        <table>
+               <tr>
+                   <td style="width:90px">申请日期：</td>
+                   <td style="width:200px">    
+                        <label id="Application_Time" />
+                   </td>
+                   <td style="width:90px">开通日期：</td>
+                   <td style="width:200px">    
+                        <label id="Up_Time" />
+                   </td>
+               </tr>
+               <tr>
+                   <td style="width:90px">使用期限：</td>
+                   <td style="width:200px">    
+                        <label id="Use_Period" />
+                   </td>
+                   <td style="width:90px">变更日期：</td>
+                   <td style="width:200px">    
+                        <label id="Change_Time"/>
+                   </td>
+               </tr>
+               <tr>
+                   <td >变更说明：</td>
+                   <td colspan="3">    
+                        <label id="Change_Info" />
+                   </td>
+               </tr>
+               <tr>
+                   <td> 备注：</td>
+                   <td colspan="3">    
+                        <label id="Remarks"  style="width:350px"/>
+                   </td>
+               </tr>
+
+        </table>
+               </div>
+       </fieldset>
+
+    <script type="text/javascript">
+        mini.parse();
+         function SetData(data) {
+            if (data.action == "details") {
+                //跨页面传递的数据对象，克隆后才可以安全使用
+                data = mini.clone(data);
+                 //var json_post  = mini.encode({'key':'id','id':data.id})
+
+                $.ajax({
+                    url: "http://10.100.30.174/cmdb/host/virtual/get/details",
+                    type: 'post',
+                    data: {'key':'id','id':data.id},
+                    cache: false,
+                    success: function (text) {
+                       var o = mini.decode(text);
+                       $("#HostName").html(o.HostName);
+                       if (o.Status == 0) {
+                         $("#Status").html("使用");
+                         }
+                       else if (o.Status ==1) {
+                         $("#Status").html("空闲");
+                         }
+                       else if (o.Status ==2) {
+                         $("#Status").html("故障");
+                         }
+                       else if  (o.Status ==3) {
+                         $("#Status").html("备用");
+                         }
+                       $("#OS_id").html(o.OS_id);
+                       $("#Kernel_id").html(o.Kernel_id);
+                       $("#Service_id").html(o.Service_id);
+                       $("#Department_id").html(o.Department_id);
+                       $("#Use_Info").html(o.Use_Info);
+                       $("#User").html(o.User);
+                       $("#Deploy_Path").html(o.Deploy_Path);
+                       $("#Manage_IP").html(o.Manage_IP);
+                       $("#Physical_Host_IP").html(o.Physical_Host_IP);
+                       $("#SSH_Port").html(o.SSH_Port);
+                       $("#vCPU_Number").html(o.vCPU_Number);
+                       $("#Memory_Size").html(o.Memory_Size);
+                       $("#Disk_Size").html(o.Disk_Size);
+                       $("#Application_Time").html(o.Application_Time);
+                       $("#Use_Period").html(o.Use_Period);
+                       $("#Up_Time").html(o.Up_Time);
+                       $("#Change_Time").html(o.Change_Time);
+                       $("#Change_Info").html(o.Change_Info);
+                       $("#Remarks").html(o.Remarks);
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
