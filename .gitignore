@@ -1,2 +1,4 @@
 uwsgi.pid
 uwsgi.log
+cmdb/*.pyc
+ops/*.pyc
