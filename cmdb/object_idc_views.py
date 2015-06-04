@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from cmdb.models import IDC 
 import json
 import urllib
+import cmdb_log
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -60,9 +61,11 @@ def idc_save(request):
     if  data['id']:
         i = IDC.objects.filter(id=data['id'])
         i.update(IDC_Name = data['IDC_Name'],IDC_Location = data['IDC_Location'],IDC_Contact = data['IDC_Contact'],IDC_Phone = data['IDC_Phone'],IDC_Email = data['IDC_Email'])
+        cmdb_log.log_change(request,i[0],data['IDC_Name'],data)
     else:
         i = IDC(IDC_Name = data['IDC_Name'],IDC_Location = data['IDC_Location'],IDC_Contact = data['IDC_Contact'],IDC_Phone = data['IDC_Phone'],IDC_Email = data['IDC_Email'])
         i.save()
+        cmdb_log.log_addition(request,i,data['IDC_Name'],data)
     json_r = json.dumps({"result":"save sucess"})
     return HttpResponse(json_r)
 
@@ -79,6 +82,7 @@ def idc_del(request):
     ids = data['id'].split(',')
     for del_id in ids:
         i = IDC.objects.filter(id=del_id)
+        cmdb_log.log_deletion(request,i[0],i[0].IDC_Name,data)
         i.delete()
     json_r = json.dumps({"result":"delete sucess"})
     return HttpResponse(json_r)

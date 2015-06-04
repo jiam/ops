@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from cmdb.models import Vendor 
 import json
 import urllib
+import cmdb_log
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -59,9 +60,11 @@ def vendor_save(request):
     if  data['id']:
         i = Vendor.objects.filter(id=data['id'])
         i.update(Vendor_Name = data['Vendor_Name'])
+        cmdb_log.log_change(request,i[0],i[0].Vendor_Name,data)
     else:
         i = Vendor(Vendor_Name = data['Vendor_Name'])
         i.save()
+        cmdb_log.log_addition(request,i,i.Vendor_Name,data)
     json_r = json.dumps({"result":"save sucess"})
     return HttpResponse(json_r)
 
@@ -78,6 +81,7 @@ def vendor_del(request):
     ids = data['id']
     for del_id in ids:
         i = Vendor.objects.filter(id=del_id)
+        cmdb_log.log_deletion(request,i[0],i[0].Vendor_Name,data)
         i.delete()
     json_r = json.dumps({"result":"delete sucess"})
     return HttpResponse(json_r)

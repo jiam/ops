@@ -6,6 +6,7 @@ from cmdb.models import Rack
 from cmdb.models import IDC
 import json
 import urllib
+import cmdb_log
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -70,10 +71,12 @@ def rack_save(request):
     if  data['id']:
         r = Rack.objects.filter(id=data['id'])
         r.update(Rack_Name = data['Rack_Name'],idc = data['IDC_id'])
+        cmdb_log.log_change(request,r[0],r[0].Rack_Name,data)
     else:
         i = IDC.objects.get(id=data['IDC_id'])
         r = Rack(Rack_Name = data['Rack_Name'],idc = i)
         r.save()
+        cmdb_log.log_addition(request,r,r.Rack_Name,data)
     json_r = json.dumps({"result":"save sucess"})
     return HttpResponse(json_r)
 
@@ -90,6 +93,7 @@ def rack_del(request):
     ids = data['id'].split(',')
     for del_id in ids:
         i = Rack.objects.filter(id=del_id)
+        cmdb_log.log_deletion(request,i[0],i[0].Rack_Name,data)
         i.delete()
     json_r = json.dumps({"result":"delete sucess"})    
     return HttpResponse(json_r)

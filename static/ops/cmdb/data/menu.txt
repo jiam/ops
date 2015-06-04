@@ -26,5 +26,5 @@
 	{ id: "addRight", pid: "user", text: "用户权限",  url: "http://10.100.30.174/cmdb/user" },
 	{ id: "log", text: "日志管理"},
 	{ id: "login", pid: "log", text: "登录日志",  url: "../html/login_log.html"},		
-	{ id: "op", pid: "log", text: "操作日志",  url: "../html/building.html"}		
+	{ id: "op", pid: "log", text: "操作日志",  url: "../html/op_log.html"}		
 ]
