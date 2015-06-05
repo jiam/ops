@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from cmdb.models import CPU 
 import json
 import urllib
+import cmdb_log
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -58,10 +59,13 @@ def cpu_save(request):
     data = json.loads(json_str)
     if  data['id']:
         i = CPU.objects.filter(id=data['id'])
+        message = cmdb_log.cmp(list(i.values())[0],data)
         i.update(CPU_Type = data['CPU_Type'],CPU_Cores = data['CPU_Cores'])
+        cmdb_log.log_change(request,i[0],data['CPU_Type'],message)
     else:
         i = CPU(CPU_Type = data['CPU_Type'],CPU_Cores = data['CPU_Cores'])
         i.save()
+        cmdb_log.log_addition(request,i,data['CPU_Type'],data)
     json_r = json.dumps({"result":"save sucess"})
     return HttpResponse(json_r)
 @csrf_exempt
@@ -74,9 +78,10 @@ def cpu_del(request):
         return HttpResponse(json_r)
     json_str =request.body
     data = json.loads(json_str)
-    ids = data['id']
+    ids = data['id'].split(',')
     for del_id in ids:
         i = CPU.objects.filter(id=del_id)
+        cmdb_log.log_deletion(request,i[0],i[0].CPU_Type,data)
         i.delete()
     json_r = json.dumps({"result":"delete sucess"})
     return HttpResponse(json_r)

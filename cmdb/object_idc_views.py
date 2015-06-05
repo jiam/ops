@@ -6,7 +6,6 @@ from cmdb.models import IDC
 import json
 import urllib
 import cmdb_log
-
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt  
@@ -60,8 +59,9 @@ def idc_save(request):
     data = json.loads(json_str)
     if  data['id']:
         i = IDC.objects.filter(id=data['id'])
+        message = cmdb_log.cmp(list(i.values())[0],data)
         i.update(IDC_Name = data['IDC_Name'],IDC_Location = data['IDC_Location'],IDC_Contact = data['IDC_Contact'],IDC_Phone = data['IDC_Phone'],IDC_Email = data['IDC_Email'])
-        cmdb_log.log_change(request,i[0],data['IDC_Name'],data)
+        cmdb_log.log_change(request,i[0],data['IDC_Name'],message)
     else:
         i = IDC(IDC_Name = data['IDC_Name'],IDC_Location = data['IDC_Location'],IDC_Contact = data['IDC_Contact'],IDC_Phone = data['IDC_Phone'],IDC_Email = data['IDC_Email'])
         i.save()

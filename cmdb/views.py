@@ -136,4 +136,26 @@ def get_op_log(request):
             log_list.append(log_d)
         data = {"total":len(log_list),"data":log_list[start:stop]}
         json_r = json.dumps(data) 
+    if key == 'user':
+        user = request.POST['search']
+        if user == '':
+            user = 'admin'
+        if sortOrder == 'asc':
+            logs = LogEntry.objects.filter(user=user).order_by(sortField)
+        else:
+            logs = LogEntry.objects.filter(user=user).order_by('-'+sortField)
+        for log in logs:
+            user = User.objects.get(id=log.user_id).username
+            action_time = LogEntry.action_time+datetime.timedelta(hours=8)
+            log_d = {
+                 'user':user,
+                 'content_type':ContentType.objects.get(id = log.content_type_id).name,
+                 'action_flag':log.action_flag.__str__(),
+                 'object_repr':log.object_repr,
+                 'change_message':log.change_message,
+                 'action_time':action_time.strftime('%Y-%m-%d  %H:%M:%S')
+                }
+            log_list.append(log_d)
+        data = {"total":len(log_list),"data":log_list[start:stop]}
+        json_r = json.dumps(data)
     return HttpResponse(json_r)

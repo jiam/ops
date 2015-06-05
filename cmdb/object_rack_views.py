@@ -70,8 +70,10 @@ def rack_save(request):
     data = json.loads(json_str)
     if  data['id']:
         r = Rack.objects.filter(id=data['id'])
-        r.update(Rack_Name = data['Rack_Name'],idc = data['IDC_id'])
-        cmdb_log.log_change(request,r[0],r[0].Rack_Name,data)
+        i = IDC.objects.get(id=data['IDC_id'])
+        message = cmdb_log.cmp(list(r.values())[0],data)
+        r.update(Rack_Name = data['Rack_Name'],idc = i)
+        cmdb_log.log_change(request,r[0],r[0].Rack_Name,message)
     else:
         i = IDC.objects.get(id=data['IDC_id'])
         r = Rack(Rack_Name = data['Rack_Name'],idc = i)

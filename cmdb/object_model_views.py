@@ -6,6 +6,7 @@ from cmdb.models import Vendor
 from cmdb.models import Model
 import json
 import urllib
+import cmdb_log
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -78,11 +79,14 @@ def model_save(request):
     data = json.loads(json_str)
     if  data['id']:
         r = Model.objects.filter(id=data['id'])
+        message = cmdb_log.cmp(list(r.values())[0],data)
         r.update(Model_Name = data['Model_Name'],vendor = data['Vendor_id'])
+        cmdb_log.log_change(request,r[0],data['Model_Name'],message)
     else:
         i = Vendor.objects.get(id=data['Vendor_id'])
         r = Model(Model_Name = data['Model_Name'],vendor = i)
         r.save()
+        cmdb_log.log_change(request,i,data['Model_Name'],data)
     json_r = json.dumps({"result":"save sucess"})
     return HttpResponse(r)
 
@@ -96,9 +100,10 @@ def model_del(request):
         return HttpResponse(json_r)
     json_str =request.body
     data = json.loads(json_str)
-    ids = data['id']
+    ids = data['id'].split(',')
     for del_id in ids:
         i = Model.objects.filter(id=del_id)
+        cmdb_log.log_deletion(request,i[0],i[0].Model_Name,data)
         i.delete()
     json_r = json.dumps({"result":"delete sucess"}) 
-    return HttpResponse(json_r)
+    return HttpResponse(del_id)

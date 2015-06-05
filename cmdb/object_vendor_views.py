@@ -59,8 +59,9 @@ def vendor_save(request):
     data = json.loads(json_str)
     if  data['id']:
         i = Vendor.objects.filter(id=data['id'])
+        message = cmdb_log.cmp(list(i.values())[0],data)
         i.update(Vendor_Name = data['Vendor_Name'])
-        cmdb_log.log_change(request,i[0],i[0].Vendor_Name,data)
+        cmdb_log.log_change(request,i[0],i[0].Vendor_Name,message)
     else:
         i = Vendor(Vendor_Name = data['Vendor_Name'])
         i.save()
@@ -78,7 +79,7 @@ def vendor_del(request):
         return HttpResponse(json_r)
     json_str =request.body
     data = json.loads(json_str)
-    ids = data['id']
+    ids = data['id'].split(',')
     for del_id in ids:
         i = Vendor.objects.filter(id=del_id)
         cmdb_log.log_deletion(request,i[0],i[0].Vendor_Name,data)
