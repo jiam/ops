@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from cmdb.models import Service
 import json
 import urllib
+import cmdb_log
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -58,10 +59,13 @@ def service_save(request):
     data = json.loads(json_str)
     if  data['id']:
         i = Service.objects.filter(id=data['id'])
+        message = cmdb_log.cmp(list(i.values())[0],data)
         i.update(Service_Name = data['Service_Name'])
+        cmdb_log.log_change(request,i[0],data['Service_Name'],message)
     else:
         i = Service(Service_Name = data['Service_Name'])
         i.save()
+        cmdb_log.log_addition(request,i,data['Service_Name'],data)
     json_r = json.dumps({"result":"save sucess"})
     return HttpResponse(json_r)
 @csrf_exempt
@@ -77,6 +81,7 @@ def service_del(request):
     ids = data['id']
     for del_id in ids:
         i = Service.objects.filter(id=del_id)
+        cmdb_log.log_deletion(request,i[0],i[0].Service_Name,data)
         i.delete()
     json_r = json.dumps({"result":"delete sucess"})
     return HttpResponse(json_r)

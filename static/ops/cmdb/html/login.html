@@ -69,10 +69,10 @@
                     var o = mini.decode(text);
                     if (o.result == 'ok') {
                       loginWindow.hide();
-                      mini.loading("登录成功，马上转到系统...", "登录成功");
+                      //mini.loading("登录成功，马上转到系统...", "登录成功");
                       setTimeout(function () {
                         window.location = "http://10.100.30.174/ops/cmdb/html/index.html";
-                      }, 1500);
+                      }, 500);
                       }
                     else {
                          alert('账号或密码错误');

@@ -10,6 +10,16 @@ import cmdb_log
 
 from django.views.decorators.csrf import csrf_exempt
 
+
+def rack_get_byid(request,id):
+    if not request.user.is_authenticated():
+        json_r = json.dumps({"result":"no login"})
+        return HttpResponse(json_r)
+    id = id
+    models = list(Rack.objects.filter(idc=id).values())
+    json_r = json.dumps(models)
+    return HttpResponse(json_r)
+
 @csrf_exempt  
 def rack_get(request):
     if not request.user.is_authenticated():

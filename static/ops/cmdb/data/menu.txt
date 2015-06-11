@@ -2,14 +2,15 @@
 	{ id: "object", text: "DashBoard"},
 
 	{ id: "object", text: "对象管理"},
-	{ id: "idc", pid: "object", text: "IDC", url: "../html/object_idc.html" },
-	{ id: "rack", pid: "object", text: "机柜", url: "../html/object_rack.html" },
 	{ id: "vendor", pid: "object", text: "厂商", url: "../html/object_vendor.html" },
 	{ id: "model", pid: "object", text: "型号", url: "../html/object_model.html" },
 	{ id: "cpu", pid: "object", text: "CPU", url: "../html/object_cpu.html" },
 	{ id: "memory", pid: "object", text: "内存", url: "../html/object_memory.html" },
 	{ id: "disk", pid: "object", text: "硬盘", url: "../html/object_disk.html" },
 	{ id: "raid", pid: "object", text: "RAID", url: "../html/object_raid.html" },
+	{ id: "hba", pid: "object", text: "HBA卡", url: "../html/object_hba.html" },
+	{ id: "pcie", pid: "object", text: "PCIE扩展卡", url: "../html/object_pcie.html" },
+	{ id: "nic", pid: "object", text: "扩展网卡", url: "../html/object_nic.html" },
 	{ id: "os", pid: "object", text: "OS", url: "../html/object_os.html" },
 	{ id: "kernel", pid: "object", text: "Kernel", url: "../html/object_kernel.html" },
 	{ id: "service", pid: "object", text: "业务", url: "../html/object_service.html" },
@@ -21,6 +22,15 @@
 	{ id: "virtual_server", pid: "host", text: "虚拟服务器", url: "../html/host_virtual.html" },
 	{ id: "storage_server", pid: "host", text: "存储服务器", url: "../html/host_storage.html" },
 
+	{ id: "resource", text: "资源管理"},
+	{ id: "idc", pid: "resource", text: "IDC", url: "../html/object_idc.html" },
+	{ id: "rack", pid: "resource", text: "机柜", url: "../html/object_rack.html" },
+	{ id: "ip", pid: "resource", text: "IP", url: "../html/building.html" },
+	{ id: "domain", pid: "resource", text: "域名", url: "../html/building.html" },
+
+	{ id: " Accessories", text: "配件管理"},
+	{ id: "memory", pid: " Accessories", text: "内存", url: "../html/accessories_memory.html" },
+	{ id: "disk", pid: " Accessories", text: "硬盘", url: "../html/accessories_disk.html" },
 		
 	{ id: "user", text: "用户管理"},
 	{ id: "addRight", pid: "user", text: "用户权限",  url: "http://10.100.30.174/cmdb/user" },

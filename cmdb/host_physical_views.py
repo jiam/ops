@@ -5,10 +5,9 @@ from django.http import HttpResponseRedirect
 from cmdb.models import *
 import json
 import urllib
+import cmdb_log
 
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponseRedirect
-from django.http import HttpResponseRedirect
 
 @csrf_exempt  
 def physical_get(request):
@@ -59,12 +58,16 @@ def physical_get(request):
                       'Kernel_id':physical.kernel.id,
                       'Service_id':physical.service.id,
                       'Department_id':physical.department.id,
+                      'User':physical.User,
+                      'UseInfo':physical.UseInfo,
                       'IDC_id':physical.idc.id,
                       'Zone_id':physical.zone.id,
                       'Rack_id':physical.rack.id,
                       'Rack_Position':physical.Rack_Position,
                       'Manage_IP':physical.Manage_IP,
                       'RAC_IP':physical.RAC_IP,
+                      'NAS_IP':physical.NAS_IP,
+                      'VIP':physical.VIP,
                       'CPU_id':physical.cpu.id,
                       'CPU_Number':physical.CPU_Number,
                       'Memory_id':physical.memory.id,
@@ -76,6 +79,12 @@ def physical_get(request):
                       'RAID_id':physical.raid.id,
                       'RAID_Battery':physical.RAID_Battery,
                       'RAID_Level':physical.RAID_Level,
+                      'HBA_id':physical.hba.id,
+                      'HBA_Number':physical.HBA_Number,
+                      'PCIE_id':physical.pcie.id,
+                      'PCIE_Number':physical.PCIE_Number,
+                      'NIC_id':physical.nic.id,
+                      'NIC_Number':physical.NIC_Number,
                       'Purchasing_Time':str(physical.Purchasing_Time),
                       'Guarantee_Time':str(physical.Guarantee_Time),
                       'Change_Time':str(physical.Change_Time),
@@ -86,7 +95,7 @@ def physical_get(request):
         json_r = json.dumps(physical_d)
     elif key == 'hostname':
         hostname = request.POST.get('search')
-        physicals= HostPhysical.objects.filter(HostName__contains=hostname)
+        physicals= HostPhysical.objects.filter(HostName=hostname)
         for physical in physicals:
             physical_d = {'id':physical.id,
                           'HostName':physical.HostName,
@@ -106,7 +115,7 @@ def physical_get(request):
         json_r = json.dumps(data)
     elif key == 'sn':
         sn = request.POST.get('search')
-        physicals= HostPhysical.objects.filter(SN__contains=sn)
+        physicals= HostPhysical.objects.filter(SN=sn)
         for physical in physicals:
             physical_d = {'id':physical.id,
                           'HostName':physical.HostName,
@@ -126,7 +135,7 @@ def physical_get(request):
         json_r = json.dumps(data)
     elif key == 'asset_sn':
         asset_sn = request.POST.get('search')
-        physicals= HostPhysical.objects.filter(Asset_SN__contains=asset_sn)
+        physicals= HostPhysical.objects.filter(Asset_SN=asset_sn)
         for physical in physicals:
             physical_d = {'id':physical.id,
                           'HostName':physical.HostName,
@@ -146,7 +155,47 @@ def physical_get(request):
         json_r = json.dumps(data)
     elif key == 'ip':
         ip = request.POST.get('search')
-        physicals= HostPhysical.objects.filter(Manage_IP__contains=ip)
+        physicals= HostPhysical.objects.filter(Manage_IP=ip)
+        for physical in physicals:
+            physical_d = {'id':physical.id,
+                          'HostName':physical.HostName,
+                          'Status':physical.Status,
+                          'Asset_SN':physical.Asset_SN,
+                          'SN':physical.SN,
+                          'Vendor_id':physical.vendor.Vendor_Name,
+                          'Service_id':physical.service.Service_Name,
+                          'Model_id':physical.model.Model_Name,
+                          'Manage_IP':physical.Manage_IP,
+                          'RAC_IP':physical.RAC_IP,
+                          'IDC_id':physical.idc.IDC_Name,
+                          'Rack_id':physical.rack.Rack_Name,
+                          }            
+            physical_list.append(physical_d)
+        data = {"total":len(physical_list),"data":physical_list}
+        json_r = json.dumps(data)
+    elif key == 'vip':
+        vip = request.POST.get('search')
+        physicals= HostPhysical.objects.filter(VIP=vip)
+        for physical in physicals:
+            physical_d = {'id':physical.id,
+                          'HostName':physical.HostName,
+                          'Status':physical.Status,
+                          'Asset_SN':physical.Asset_SN,
+                          'SN':physical.SN,
+                          'Vendor_id':physical.vendor.Vendor_Name,
+                          'Service_id':physical.service.Service_Name,
+                          'Model_id':physical.model.Model_Name,
+                          'Manage_IP':physical.Manage_IP,
+                          'RAC_IP':physical.RAC_IP,
+                          'IDC_id':physical.idc.IDC_Name,
+                          'Rack_id':physical.rack.Rack_Name,
+                          }            
+            physical_list.append(physical_d)
+        data = {"total":len(physical_list),"data":physical_list}
+        json_r = json.dumps(data)
+    elif key == 'nas_ip':
+        nas_ip = request.POST.get('search')
+        physicals= HostPhysical.objects.filter(NAS_IP=nas_ip)
         for physical in physicals:
             physical_d = {'id':physical.id,
                           'HostName':physical.HostName,
@@ -185,12 +234,16 @@ def physical_get_details(request):
                   'Kernel_id':physical.kernel.Kernel_Name,
                   'Service_id':physical.service.Service_Name,
                   'Department_id':physical.department.Department_Name,
+                  'User':physical.User,
+                  'UseInfo':physical.UseInfo,
                   'IDC_id':physical.idc.IDC_Name,
                   'Zone_id':physical.zone.Zone_Name,
                   'Rack_id':physical.rack.Rack_Name,
                   'Rack_Position':physical.Rack_Position,
                   'Manage_IP':physical.Manage_IP,
                   'RAC_IP':physical.RAC_IP,
+                  'NAS_IP':physical.NAS_IP,
+                  'VIP':physical.VIP,
                   'CPU_id':physical.cpu.CPU_Type,
                   'CPU_Number':physical.CPU_Number,
                   'Memory_id':physical.memory.Memory_Type,
@@ -202,6 +255,12 @@ def physical_get_details(request):
                   'RAID_id':physical.raid.RAID_Type,
                   'RAID_Battery':physical.RAID_Battery,
                   'RAID_Level':physical.RAID_Level,
+                  'HBA_id':physical.hba.HBA_Type,
+                  'HBA_Number':physical.HBA_Number,
+                  'PCIE_id':physical.pcie.PCIE_Type,
+                  'PCIE_Number':physical.PCIE_Number,
+                  'NIC_id':physical.nic.NIC_Type,
+                  'NIC_Number':physical.NIC_Number,
                   'Purchasing_Time':str(physical.Purchasing_Time),
                   'Guarantee_Time':str(physical.Guarantee_Time),
                   'Change_Time':str(physical.Change_Time),
@@ -273,19 +332,23 @@ def physical_save(request):
     data = json.loads(json_str)
     if  data['id']:
         h = HostPhysical.objects.filter(id=data['id'])
-        vendor = Vendor.objects.get(id=data['Vendor_id'])
-        model = Model.objects.get(id=data['Model_id'])
-        os = OS.objects.get(id=data['OS_id'])
-        kernel = Kernel.objects.get(id=data['Kernel_id'])
-        service = Service.objects.get(id=data['Service_id'])
-        department = Department.objects.get(id=data['Department_id'])
-        idc = IDC.objects.get(id=data['IDC_id'])
-        rack = Rack.objects.get(id=data['Rack_id'])
-        cpu = CPU.objects.get(id=data['CPU_id'])
-        memory = Memory.objects.get(id=data['Memory_id'])
-        disk = Disk.objects.get(id=data['Disk_id'])
-        raid = RAID.objects.get(id=data['RAID_id'])
-        zone = Zone.objects.get(id=data['Zone_id'])
+        vendor = Vendor.objects.get(id=data['vendor_id'])
+        model = Model.objects.get(id=data['model_id'])
+        os = OS.objects.get(id=data['os_id'])
+        kernel = Kernel.objects.get(id=data['kernel_id'])
+        service = Service.objects.get(id=data['service_id'])
+        department = Department.objects.get(id=data['department_id'])
+        idc = IDC.objects.get(id=data['idc_id'])
+        rack = Rack.objects.get(id=data['rack_id'])
+        cpu = CPU.objects.get(id=data['cpu_id'])
+        memory = Memory.objects.get(id=data['memory_id'])
+        disk = Disk.objects.get(id=data['disk_id'])
+        hba = HBA.objects.get(id=data['hba_id'])
+        pcie = PCIE.objects.get(id=data['pcie_id'])
+        nic = NIC.objects.get(id=data['nic_id'])
+        raid = RAID.objects.get(id=data['raid_id'])
+        zone = Zone.objects.get(id=data['zone_id'])
+        message = cmdb_log.cmp(data,list(h.values())[0])
         h.update(SN = data['SN'],
              Asset_SN = data['Asset_SN'],
              vendor = vendor,
@@ -295,6 +358,8 @@ def physical_save(request):
              kernel = kernel,
              service = service,
              department = department,
+             User = data['User'],
+             UseInfo = data['UseInfo'],
              idc = idc,
              rack = rack,
              Rack_Position = data['Rack_Position'],
@@ -309,10 +374,18 @@ def physical_save(request):
              raid = raid,
              RAID_Battery = data['RAID_Battery'],
              RAID_Level = data['RAID_Level'],
-             Status = data['Status_id'],
+             hba = hba,
+             HBA_Number = data['HBA_Number'],
+             pcie = pcie,
+             PCIE_Number = data['PCIE_Number'],
+             nic = nic,
+             NIC_Number = data['NIC_Number'],
+             Status = data['Status'],
              zone = zone,
              Manage_IP = data['Manage_IP'],
              RAC_IP = data['RAC_IP'],
+             NAS_IP = data['NAS_IP'],
+             VIP = data['VIP'],
              Purchasing_Time = data['Purchasing_Time'][0:10],
              Guarantee_Time = data['Guarantee_Time'][0:10],
              Change_Time = data['Change_Time'][0:10],
@@ -320,22 +393,26 @@ def physical_save(request):
              Change_Info = data['Change_Info'],
              Remarks = data['Remarks']
                  )
+        cmdb_log.log_change(request,h[0],data['Manage_IP'],message)
         json_r = json.dumps({"result":"save sucess"})
         return HttpResponse(json_r)
     else:
-        vendor = Vendor.objects.get(id=data['Vendor_id'])
-        model = Model.objects.get(id=data['Model_id'])
-        os = OS.objects.get(id=data['OS_id'])
-        kernel = Kernel.objects.get(id=data['Kernel_id'])
-        service = Service.objects.get(id=data['Service_id'])
-        department = Department.objects.get(id=data['Department_id'])
-        idc = IDC.objects.get(id=data['IDC_id'])
-        rack = Rack.objects.get(id=data['Rack_id'])
-        cpu = CPU.objects.get(id=data['CPU_id'])
-        memory = Memory.objects.get(id=data['Memory_id'])
-        disk = Disk.objects.get(id=data['Disk_id'])
-        raid = RAID.objects.get(id=data['RAID_id'])
-        zone = Zone.objects.get(id=data['Zone_id'])
+        vendor = Vendor.objects.get(id=data['vendor_id'])
+        model = Model.objects.get(id=data['model_id'])
+        os = OS.objects.get(id=data['os_id'])
+        kernel = Kernel.objects.get(id=data['kernel_id'])
+        service = Service.objects.get(id=data['service_id'])
+        department = Department.objects.get(id=data['department_id'])
+        idc = IDC.objects.get(id=data['idc_id'])
+        rack = Rack.objects.get(id=data['rack_id'])
+        cpu = CPU.objects.get(id=data['cpu_id'])
+        memory = Memory.objects.get(id=data['memory_id'])
+        disk = Disk.objects.get(id=data['disk_id'])
+        raid = RAID.objects.get(id=data['raid_id'])
+        hba = HBA.objects.get(id=data['hba_id'])
+        pcie = PCIE.objects.get(id=data['pcie_id'])
+        nic = NIC.objects.get(id=data['nic_id'])
+        zone = Zone.objects.get(id=data['zone_id'])
         h = HostPhysical(SN = data['SN'],
              Asset_SN = data['Asset_SN'],
              vendor = vendor,
@@ -359,10 +436,17 @@ def physical_save(request):
              raid = raid,
              RAID_Battery = data['RAID_Battery'],
              RAID_Level = data['RAID_Level'],
-             Status = data['Status_id'],
+             hba = hba,
+             HBA_Number = data['HBA_Number'],
+             pcie = pcie,
+             PCIE_Number = data['PCIE_Number'],
+             nic = nic,
+             NIC_Number = data['NIC_Number'],
+             Status = data['Status'],
              zone = zone,
              Manage_IP = data['Manage_IP'],
              RAC_IP = data['RAC_IP'],
+             NAS_IP = data['NAS_IP'],
              Purchasing_Time = data['Purchasing_Time'][0:10],
              Guarantee_Time = data['Guarantee_Time'][0:10],
              Change_Time = data['Change_Time'][0:10],
@@ -371,6 +455,7 @@ def physical_save(request):
              Remarks = data['Remarks']
                  )
 	h.save()
+        cmdb_log.log_addition(request,h,data['Manage_IP'],data)
         json_r = json.dumps({"result":"save sucess"})
         return HttpResponse(json_r)
 
@@ -384,9 +469,10 @@ def physical_del(request):
         return HttpResponse(json_r)
     json_str =request.body
     data = json.loads(json_str)
-    ids = data['id']
+    ids = data['id'].split(',')
     for del_id in ids:
         i = HostPhysical.objects.filter(id=del_id)
+        cmdb_log.log_deletion(request,i[0],i[0].Manage_IP,data)
         i.delete()
     json_r = json.dumps({"result":"delete sucess"})
     return HttpResponse(json_r)

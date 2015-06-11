@@ -9,6 +9,9 @@ import object_vendor_views
 import object_cpu_views
 import object_memory_views
 import object_disk_views
+import object_hba_views
+import object_pcie_views
+import object_nic_views
 import object_raid_views
 import object_model_views
 import object_os_views
@@ -18,6 +21,8 @@ import object_department_views
 import object_zone_views
 import host_physical_views
 import host_virtual_views
+import accessories_memory_views
+import accessories_disk_views
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'ops.views.home', name='home'),
@@ -43,6 +48,7 @@ urlpatterns = patterns('',
     url(r'^object/zone/save$', object_zone_views.zone_save),
     url(r'^object/zone/del$', object_zone_views.zone_del),
     url(r'^object/rack/get$', object_rack_views.rack_get),
+    url(r'^object/rack/get/(\d+)$', object_rack_views.rack_get_byid),
     url(r'^object/rack/search$', object_rack_views.rack_search),
     url(r'^object/rack/save$', object_rack_views.rack_save),
     url(r'^object/rack/del$', object_rack_views.rack_del),
@@ -71,6 +77,18 @@ urlpatterns = patterns('',
     url(r'^object/raid/search$', object_raid_views.raid_search),
     url(r'^object/raid/save$', object_raid_views.raid_save),
     url(r'^object/raid/del$', object_raid_views.raid_del),
+    url(r'^object/hba/get$', object_hba_views.hba_get),
+    url(r'^object/hba/search$', object_hba_views.hba_search),
+    url(r'^object/hba/save$', object_hba_views.hba_save),
+    url(r'^object/hba/del$', object_hba_views.hba_del),
+    url(r'^object/pcie/get$', object_pcie_views.pcie_get),
+    url(r'^object/pcie/search$', object_pcie_views.pcie_search),
+    url(r'^object/pcie/save$', object_pcie_views.pcie_save),
+    url(r'^object/pcie/del$', object_pcie_views.pcie_del),
+    url(r'^object/nic/get$', object_nic_views.nic_get),
+    url(r'^object/nic/search$', object_nic_views.nic_search),
+    url(r'^object/nic/save$', object_nic_views.nic_save),
+    url(r'^object/nic/del$', object_nic_views.nic_del),
     url(r'^object/os/get$', object_os_views.os_get),
     url(r'^object/os/search$', object_os_views.os_search),
     url(r'^object/os/save$', object_os_views.os_save),
@@ -88,12 +106,18 @@ urlpatterns = patterns('',
     url(r'^object/department/save$', object_department_views.department_save),
     url(r'^object/department/del$', object_department_views.department_del),
     url(r'^host/physical/get$', host_physical_views.physical_get),
-    url(r'^host/physical/get/details$', host_physical_views.physical_get_details),
     url(r'^host/physical/search$', host_physical_views.physical_search),
     url(r'^host/physical/save$', host_physical_views.physical_save),
     url(r'^host/physical/del$', host_physical_views.physical_del),
+    url(r'^host/physical/get/details$', host_physical_views.physical_get_details),
     url(r'^host/virtual/save$', host_virtual_views.virtual_save),
     url(r'^host/virtual/get$', host_virtual_views.virtual_get),
     url(r'^host/virtual/get/details$', host_virtual_views.virtual_get_details),
     url(r'^host/virtual/del$', host_virtual_views.virtual_del),
+    url(r'^accessories/memory/save$', accessories_memory_views.memory_save),
+    url(r'^accessories/memory/get$', accessories_memory_views.memory_get),
+    url(r'^accessories/memory/del$', accessories_memory_views.memory_del),
+    url(r'^accessories/disk/save$', accessories_disk_views.disk_save),
+    url(r'^accessories/disk/get$', accessories_disk_views.disk_get),
+    url(r'^accessories/disk/del$', accessories_disk_views.disk_del),
 )

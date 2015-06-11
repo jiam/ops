@@ -27,87 +27,101 @@
          <table>
                 <tr>
                     <td style="width:90px;">主机名：</td>
-                    <td style="width:200px;">
+                    <td style="width:150px;">
                          <lable id="HostName" />
                     </td>
                     <td style="width:90px;">状态：</td>
-                    <td style="width:200px;">    
+                    <td style="width:150px;">    
                         <lable id="Status" /> 
                     </td>
-                </tr>
-                <tr>
                     <td style="width:90px;">资产编号：</td>
-                    <td style="width:200px;">
+                    <td style="width:150px;">
                          <lable id="Asset_SN" />
-                    </td>
-                    <td style="width:90px;">序列号：</td>
-                    <td style="width:200px;">    
-                         <lable id="SN" />
                     </td>
                 </tr>
                 <tr>
                     <td style="width:90px;">厂商名称：</td>
-                    <td style="width:200px;">
+                    <td style="width:150px;">
                         <label id="Vendor_id"/>
                     </td>
                     <td style="width:90px;">型号：</td>
-                    <td style="width:200px;">    
+                    <td style="width:150px;">    
                         <lable id="Model_id"/>
+                    </td>
+                    <td style="width:90px;">序列号：</td>
+                    <td style="width:150px;">    
+                         <lable id="SN" />
                     </td>
                 </tr>
                 <tr>
                     <td style="width:90px;">系统名称：</td>
-                    <td style="width:200px;">
+                    <td style="width:150px;">
                         <lable id="OS_id"/>
                     </td>
                     <td style="width:90px;">内核版本：</td>
-                    <td style="width:200px;">    
+                    <td style="width:150px;">    
                         <lable id="Kernel_id"/>
+                    </td>
+                    <td style="width:90px;">用途：</td>
+                    <td style="width:150px;">    
+                        <lable id="UseInfo"/>
                     </td>
                 </tr>
                 <tr>
+                    <td style="width:90px;">部门名称：</td>
+                    <td style="width:150px;">    
+                        <lable id="Department_id" 
+                        />
+                    </td>
                     <td style="width:90px;">业务名称：</td>
-                    <td style="width:200px;">
+                    <td style="width:150px;">
                         <lable id="Service_id"  
                         />
                     </td>
-                    <td style="width:90px;">部门名称：</td>
-                    <td style="width:200px;">    
-                        <lable id="Department_id" 
-                        />
+                    <td style="width:90px;">使用者：</td>
+                    <td style="width:150px;">    
+                        <lable id="User"/>
                     </td>
                 </tr>
                 <tr>
                     <td style="width:90px;">机房名称：</td>
-                    <td style="width:200px;">
+                    <td style="width:150px;">
                         <lable id="IDC_id" 
                         />
                     </td>
                     <td style="width:90px;">区域名称：</td>
-                    <td style="width:200px;">    
+                    <td style="width:150px;">    
                         <lable id="Zone_id"
                         />
                     </td>
-                </tr>
-                <tr>
                     <td style="width:90px;">机柜名称：</td>
-                    <td style="width:200px;">
+                    <td style="width:150px;">
                         <lable id="Rack_id"  
                         />
                     </td>
+                </tr>
+                <tr>
                     <td style="width:90px;">机架位置：</td>
-                    <td style="width:200px;">    
+                    <td style="width:150px;">    
                          <lable id="Rack_Position" />
+                    </td>
+                    <td style="width:90px;">远程管理卡IP：</td>
+                    <td style="width:150px;">    
+                         <lable id="RAC_IP" />
+                    </td>
+                    <td style="width:90px;">管理IP：</td>
+                    <td style="width:150px;">
+                         <lable id="Manage_IP"/>
                     </td>
                 </tr>
                 <tr>
-                    <td style="width:90px;">管理IP：</td>
-                    <td style="width:200px;">
-                         <lable id="Manage_IP"/>
+                    <td style="width:90px;">VIP：</td>
+                    <td style="width:150px;">    
+                         <lable id="VIP" />
                     </td>
-                    <td style="width:90px;">远程管理卡IP：</td>
-                    <td style="width:200px;">    
-                         <lable id="RAC_IP" />
+                    <td style="width:90px;">NAS IP：</td>
+                    <td style="width:150px;">    
+                         <lable id="NAS_IP" />
                     </td>
                 </tr>
                 
@@ -147,8 +161,7 @@
                 <tr>
                     <td style="width:90px;">硬盘型号：</td>
                     <td style="width:200px;">
-                        <lable id="Disk_id" 
-                        />
+                        <lable id="Disk_id" />
                     </td>
                     <td style="width:90px;">硬盘个数：</td>
                     <td style="width:200px;">    
@@ -171,6 +184,36 @@
                     <td style="width:90px;">RAID电池：</td>
                     <td style="width:200px;">    
                         <lable id="RAID_Battery" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:90px;">HBA卡型号：</td>
+                    <td style="width:150px;">
+                        <lable id="HBA_id" />
+                    </td>
+                    <td style="width:90px;">个数：</td>
+                    <td style="width:150px;">    
+                        <lable id="HBA_Number" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:90px;">PCIE卡型号：</td>
+                    <td style="width:150px;">
+                        <lable id="PCIE_id" />
+                    </td>
+                    <td style="width:90px;">个数：</td>
+                    <td style="width:150px;">    
+                        <lable id="PCIE_Number" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:90px;">扩展网卡型号：</td>
+                    <td style="width:150px;">
+                        <lable id="NIC_id" />
+                    </td>
+                    <td style="width:90px;">个数：</td>
+                    <td style="width:150px;">    
+                        <lable id="NIC_Number" />
                     </td>
                 </tr>
                 
@@ -255,11 +298,15 @@
                        $("#Kernel_id").html(o.Kernel_id);
                        $("#Service_id").html(o.Service_id);
                        $("#Department_id").html(o.Department_id);
+                       $("#User").html(o.User);
+                       $("#UseInfo").html(o.UseInfo);
                        $("#IDC_id").html(o.IDC_id);
                        $("#Rack_id").html(o.Rack_id);
                        $("#Rack_Position").html(o.Rack_Position);
                        $("#Manage_IP").html(o.Manage_IP);
                        $("#RAC_IP").html(o.RAC_IP);
+                       $("#NAS_IP").html(o.NAS_IP);
+                       $("#VIP").html(o.VIP);
                        $("#CPU_id").html(o.CPU_id);
                        $("#CPU_Number").html(o.CPU_Number);
                        $("#Memory_id").html(o.Memory_id);
@@ -269,6 +316,12 @@
                        $("#Disk_Number").html(o.Disk_Number);
                        $("#Disk_Size").html(o.Disk_Size);
                        $("#RAID_id").html(o.RAID_id);
+                       $("#HBA_id").html(o.HBA_id);
+                       $("#HBA_Number").html(o.HBA_Number);
+                       $("#PCIE_id").html(o.HBA_id);
+                       $("#PCIE_Number").html(o.HBA_Number);
+                       $("#NIC_id").html(o.HBA_id);
+                       $("#NIC_Number").html(o.HBA_Number);
                        $("#Zone_id").html(o.Zone_id);
                        $("#Purchasing_Time").html(o.Purchasing_Time);
                        $("#Up_Time").html(o.Up_Time);

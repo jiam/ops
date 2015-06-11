@@ -6,8 +6,7 @@ from cmdb.models import *
 import json
 
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponseRedirect
-from django.http import HttpResponseRedirect
+import cmdb_log
 
 @csrf_exempt  
 def virtual_get(request):
@@ -55,8 +54,10 @@ def virtual_get(request):
                      'vCPU_Number': virtual.vCPU_Number,           
                      'Memory_Size': virtual.Memory_Size,
                      'Disk_Size': virtual.Disk_Size,
-                     'Status_id': virtual.Status,
+                     'Status': virtual.Status,
                      'Manage_IP': virtual.Manage_IP,
+                     'VIP': virtual.VIP,
+                     'NAS_IP': virtual.NAS_IP,
                      'Physical_Host_IP': virtual.Physical_Host_IP,
                      'SSH_Port': virtual.SSH_Port,
                      'Application_Time': str(virtual.Application_Time),
@@ -64,7 +65,8 @@ def virtual_get(request):
                      'Use_Period': virtual.Use_Period,
                      'Use_Info': virtual.Use_Info,
                      'Up_Time': str(virtual.Up_Time),
-                     'Change_Info': virtual.Change_Info
+                     'Change_Info': virtual.Change_Info,
+                     'Remarks': virtual.Remarks
                       }            
         json_r = json.dumps(virtual_d)
     elif key == 'hostname':
@@ -118,6 +120,40 @@ def virtual_get(request):
             virtual_list.append(virtual_d)
         data = {"total":len(virtual_list),"data":virtual_list}
         json_r = json.dumps(data)
+    elif key == 'vip':
+        vip = request.POST.get('search')
+        virtuals= HostVirtual.objects.filter(VIP=vip)
+        for virtual in virtuals:
+            virtual_d = {'id':virtual.id,
+                          'HostName':virtual.HostName,
+                          'Status':virtual.Status,
+                          'Use_Info':virtual.Use_Info,
+                          'User':virtual.User,
+                          'Department_id':virtual.department.Department_Name,
+                          'Manage_IP':virtual.Manage_IP,
+                          'Physical_Host_IP': virtual.Physical_Host_IP,
+                          'SSH_Port':virtual.SSH_Port,
+                          }            
+            virtual_list.append(virtual_d)
+        data = {"total":len(virtual_list),"data":virtual_list}
+        json_r = json.dumps(data)
+    elif key == 'nas_ip':
+        nas_ip = request.POST.get('search')
+        virtuals= HostVirtual.objects.filter(NAS_IP=nas_ip)
+        for virtual in virtuals:
+            virtual_d = {'id':virtual.id,
+                          'HostName':virtual.HostName,
+                          'Status':virtual.Status,
+                          'Use_Info':virtual.Use_Info,
+                          'User':virtual.User,
+                          'Department_id':virtual.department.Department_Name,
+                          'Manage_IP':virtual.Manage_IP,
+                          'Physical_Host_IP': virtual.Physical_Host_IP,
+                          'SSH_Port':virtual.SSH_Port,
+                          }            
+            virtual_list.append(virtual_d)
+        data = {"total":len(virtual_list),"data":virtual_list}
+        json_r = json.dumps(data)
     return HttpResponse(json_r)
 
 
@@ -141,6 +177,8 @@ def virtual_get_details(request):
                  'Disk_Size': virtual.Disk_Size,
                  'Status': virtual.Status,
                  'Manage_IP': virtual.Manage_IP,
+                 'VIP': virtual.VIP,
+                 'NAS_IP': virtual.NAS_IP,
                  'Physical_Host_IP': virtual.Physical_Host_IP,
                  'SSH_Port': virtual.SSH_Port,
                  'Application_Time': str(virtual.Application_Time),
@@ -148,7 +186,8 @@ def virtual_get_details(request):
                  'Use_Period': virtual.Use_Period,
                  'Use_Info': virtual.Use_Info,
                  'Up_Time': str(virtual.Up_Time),
-                 'Change_Info': virtual.Change_Info
+                 'Change_Info': virtual.Change_Info,
+                 'Remarks': virtual.Remarks
                   }            
 
     json_r = json.dumps(virtual_d)
@@ -215,10 +254,11 @@ def virtual_save(request):
     data = json.loads(json_str)
     if  data['id']:
         h = HostVirtual.objects.filter(id=data['id'])
-        os = OS.objects.get(id=data['OS_id'])
-        kernel = Kernel.objects.get(id=data['Kernel_id'])
-        service = Service.objects.get(id=data['Service_id'])
-        department = Department.objects.get(id=data['Department_id'])
+        os = OS.objects.get(id=data['os_id'])
+        kernel = Kernel.objects.get(id=data['kernel_id'])
+        service = Service.objects.get(id=data['service_id'])
+        department = Department.objects.get(id=data['department_id'])
+        message = cmdb_log.cmp(data,list(h.values())[0])
         h.update(
              HostName = data['HostName'],
              os = os,
@@ -230,8 +270,10 @@ def virtual_save(request):
              vCPU_Number = data['vCPU_Number'],           
              Memory_Size = data['Memory_Size'],
              Disk_Size = data['Disk_Size'],
-             Status = data['Status_id'],
+             Status = data['Status'],
              Manage_IP = data['Manage_IP'],
+             VIP = data['VIP'],
+             NAS_IP = data['NAS_IP'],
              Physical_Host_IP = data['Physical_Host_IP'],
              SSH_Port = data['SSH_Port'],
              Application_Time = data['Application_Time'][0:10],
@@ -242,13 +284,14 @@ def virtual_save(request):
              Change_Info = data['Change_Info'],
              Remarks = data['Remarks']
                  )
+        cmdb_log.log_change(request,h[0],data['Manage_IP'],message)
         json_r = json.dumps({"result":"save sucess"})
         return HttpResponse(json_r)
     else:
-        os = OS.objects.get(id=data['OS_id'])
-        kernel = Kernel.objects.get(id=data['Kernel_id'])
-        service = Service.objects.get(id=data['Service_id'])
-        department = Department.objects.get(id=data['Department_id'])
+        os = OS.objects.get(id=data['os_id'])
+        kernel = Kernel.objects.get(id=data['kernel_id'])
+        service = Service.objects.get(id=data['service_id'])
+        department = Department.objects.get(id=data['department_id'])
         h = HostVirtual(
              HostName = data['HostName'],
              os = os,
@@ -260,8 +303,10 @@ def virtual_save(request):
              vCPU_Number = data['vCPU_Number'],           
              Memory_Size = data['Memory_Size'],
              Disk_Size = data['Disk_Size'],
-             Status = data['Status_id'],
+             Status = data['Status'],
              Manage_IP = data['Manage_IP'],
+             VIP = data['VIP'],
+             NAS_IP = data['NAS_IP'],
              Physical_Host_IP = data['Physical_Host_IP'],
              SSH_Port = data['SSH_Port'],
              Application_Time = data['Application_Time'][0:10],
@@ -270,8 +315,10 @@ def virtual_save(request):
              Use_Info = data['Use_Info'],
              Up_Time = data['Up_Time'][0:10],
              Change_Info = data['Change_Info'],
+             Remarks = data['Remarks']
                  )
 	h.save()
+        cmdb_log.log_addition(request,h,data['Manage_IP'],data)
         json_r = json.dumps({"result":"save sucess"})
         return HttpResponse(json_r)
 
@@ -285,9 +332,10 @@ def virtual_del(request):
         return HttpResponse(json_r)
     json_str =request.body
     data = json.loads(json_str)
-    ids = data['id']
+    ids = data['id'].split(',')
     for del_id in ids:
         i = HostVirtual.objects.filter(id=del_id)
+        cmdb_log.log_deletion(request,i[0],i[0].Manage_IP,data)
         i.delete()
     json_r = json.dumps({"result":"delete sucess"})
     return HttpResponse(json_r)

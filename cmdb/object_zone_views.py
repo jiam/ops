@@ -6,6 +6,7 @@ from cmdb.models import Zone
 from cmdb.models import IDC
 import json
 import urllib
+import cmdb_log
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -78,11 +79,14 @@ def zone_save(request):
     data = json.loads(json_str)
     if  data['id']:
         r = Zone.objects.filter(id=data['id'])
+        message = cmdb_log.cmp(list(r.values())[0],data)
         r.update(Zone_Name = data['Zone_Name'],idc = data['IDC_id'])
+        cmdb_log.log_change(request,r[0],data['Zone_Name'],message)
     else:
         i = IDC.objects.get(id=data['IDC_id'])
         r = Zone(Zone_Name = data['Zone_Name'],idc = i)
         r.save()
+        cmdb_log.log_addition(request,r,data['Zone_Name'],data)
     json_r = json.dumps({"result":"save sucess"})
     return HttpResponse(json_r)
 @csrf_exempt
@@ -98,6 +102,7 @@ def zone_del(request):
     ids = data['id']
     for del_id in ids:
         i = Zone.objects.filter(id=del_id)
+        cmdb_log.log_deletion(request,i[0],i[0].Zone_Name,data)
         i.delete()
     json_r = json.dumps({"result":"delete sucess"})
     return HttpResponse(json_r)

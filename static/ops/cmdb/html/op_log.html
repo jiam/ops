@@ -13,7 +13,8 @@
                 success: function (text) {
                     var o = mini.decode(text);
                     if (o.result == 'fail') {
-                        window.location = "http://10.100.30.174/ops/cmdb/html/login.html";
+                        //window.location = "http://10.100.30.174/ops/cmdb/html/login.html";
+                        parent.location.reload()
                     }
                 }
              });

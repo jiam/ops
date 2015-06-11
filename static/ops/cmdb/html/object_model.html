@@ -7,6 +7,18 @@
     <link href="../css/demo.css" rel="stylesheet" type="text/css" />
 
     <script src="../../scripts/boot.js" type="text/javascript"></script>
+    <script type="text/javascript">
+         $.ajax({
+                url: "http://10.100.30.174/cmdb/islogin",
+                success: function (text) {
+                    var o = mini.decode(text);
+                    if (o.result == 'fail') {
+                       // window.location = "http://10.100.30.174/ops/cmdb/html/login.html";
+                       parent.location.reload();
+                    }
+                }
+             });
+    </script>
 </head>
 <body>
     <div style="width:800px;">

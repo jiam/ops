@@ -35,21 +35,21 @@
                     </td>
                     <td style="width:90px;">状态：</td>
                     <td style="width:200px;">    
-                        <input name="Status_id" class="mini-combobox" url="../data/status.txt" 
+                        <input name="Status" class="mini-combobox" url="../data/status.txt" 
                     </td>
                 </tr>
                 <tr>
                 <tr>
                     <td style="width:90px;">系统名称：</td>
                     <td style="width:200px;">
-                        <input name="OS_id" class="mini-combobox" valueField="id" textField="OS_Name" 
+                        <input name="os_id" class="mini-combobox" valueField="id" textField="OS_Name" 
                           url="http://10.100.30.174/cmdb/object/os/get"
                           required="true"
                         />
                     </td>
                     <td style="width:90px;">内核版本：</td>
                     <td style="width:200px;">    
-                        <input name="Kernel_id" class="mini-combobox" valueField="id" textField="Kernel_Name" 
+                        <input name="kernel_id" class="mini-combobox" valueField="id" textField="Kernel_Name" 
                           url="http://10.100.30.174/cmdb/object/kernel/get"
                           required="true"
                         />
@@ -68,14 +68,14 @@
                 <tr>
                     <td style="width:90px;">业务名称：</td>
                     <td style="width:200px;">
-                        <input name="Service_id" class="mini-combobox" valueField="id" textField="Service_Name" 
+                        <input name="service_id" class="mini-combobox" valueField="id" textField="Service_Name" 
                           url="http://10.100.30.174/cmdb/object/service/get"
                           required="true"
                         />
                     </td>
                     <td style="width:90px;">部门名称：</td>
                     <td style="width:200px;">    
-                        <input name="Department_id" class="mini-combobox" valueField="id" textField="Department_Name" 
+                        <input name="department_id" class="mini-combobox" valueField="id" textField="Department_Name" 
                           url="http://10.100.30.174/cmdb/object/department/get"
                           required="true"
                         />
@@ -97,6 +97,16 @@
                     <td style="width:90px;">SSH端口：</td>
                     <td style="width:100px;">    
                          <input name="SSH_Port" class="mini-textbox" value="22"  required="true"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:90px;">VIP：</td>
+                    <td style="width:200px;">
+                         <input name="VIP" class="mini-textbox" value="0.0.0.0" required="true"/>
+                    </td>
+                    <td style="width:90px;">NAS IP：</td>
+                    <td style="width:200px;">    
+                         <input name="NAS_IP" class="mini-textbox" value="0.0.0.0"  required="true"/>
                     </td>
                 </tr>
                 
@@ -216,11 +226,11 @@
                     success: function (text) {
                        var o = mini.decode(text);
                        form.setData(o);
-                       mini.getbyName("Status_id").setValue(o.Status_id);
-                       mini.getbyName("OS_id").setValue(o.OS_id);
-                       mini.getbyName("Kernel_id").setValue(o.Kernel_id);
-                       mini.getbyName("Service_id").setValue(o.Service_id);
-                       mini.getbyName("Department_id").setValue(o.Department_id);
+                       mini.getbyName("Status").setValue(o.Status);
+                       mini.getbyName("os_id").setValue(o.OS_id);
+                       mini.getbyName("kernel_id").setValue(o.Kernel_id);
+                       mini.getbyName("service_id").setValue(o.Service_id);
+                       mini.getbyName("department_id").setValue(o.Department_id);
                        
                     }
                 });

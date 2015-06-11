@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from cmdb.models import Kernel
 import json
 import urllib
+import cmdb_log
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -58,10 +59,13 @@ def kernel_save(request):
     data = json.loads(json_str)
     if  data['id']:
         i = Kernel.objects.filter(id=data['id'])
+        message = cmdb_log.cmp(list(i.values())[0],data)
         i.update(Kernel_Name = data['Kernel_Name'])
+        cmdb_log.log_change(request,i[0],data['Kernel_Name'],message)
     else:
         i = Kernel(Kernel_Name = data['Kernel_Name'])
         i.save()
+        cmdb_log.log_addition(request,i,data['Kernel_Name'],data)
     json_r = json.dumps({"result":"save sucess"})
     return HttpResponse(json_r)
 @csrf_exempt
@@ -77,6 +81,7 @@ def kernel_del(request):
     ids = data['id']
     for del_id in ids:
         i = Kernel.objects.filter(id=del_id)
+        cmdb_log.log_deletion(request,i[0],i[0].Kernel_Name,data)
         i.delete()
     json_r = json.dumps({"result":"delete sucess"})
     return HttpResponse(json_r)

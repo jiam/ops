@@ -25,6 +25,13 @@ class Memory(models.Model):
 class Disk(models.Model):
     Disk_Type = models.CharField(max_length=30)
 
+class HBA(models.Model):
+    HBA_Type = models.CharField(max_length=30)
+class PCIE(models.Model):
+    PCIE_Type = models.CharField(max_length=30)
+class NIC(models.Model):
+    NIC_Type = models.CharField(max_length=30)
+
 class RAID(models.Model):
     RAID_Type = models.CharField(max_length=100)
     RAID_Cache = models.CharField(max_length=30)
@@ -72,6 +79,8 @@ class HostPhysical(models.Model):
     HostName = models.CharField(max_length=30)
     service = models.ForeignKey(Service)
     department = models.ForeignKey(Department)
+    User = models.CharField(max_length=30)
+    UseInfo = models.CharField(max_length=30)
     idc = models.ForeignKey(IDC)
     rack = models.ForeignKey(Rack)
     Rack_Position = models.CharField(max_length=20,blank=True,null=True)
@@ -84,6 +93,12 @@ class HostPhysical(models.Model):
     Disk_Solt_Number = models.IntegerField(blank=True,null=True)
     Disk_Number = models.IntegerField(blank=True,null=True)
     Disk_Size = models.CharField(max_length=20,blank=True,null=True) 
+    hba = models.ForeignKey(HBA)
+    HBA_Number = models.IntegerField(blank=True,null=True)
+    pcie = models.ForeignKey(PCIE)
+    PCIE_Number = models.IntegerField(blank=True,null=True)
+    nic = models.ForeignKey(NIC)
+    NIC_Number = models.IntegerField(blank=True,null=True)
     raid = models.ForeignKey(RAID)
     RAID_Battery = models.CharField(max_length=30)
     RAID_Level = models.CharField(max_length=30)
@@ -91,6 +106,8 @@ class HostPhysical(models.Model):
     LAN_IP = models.IPAddressField(blank=True,null=True)
     WAN_IP = models.IPAddressField(blank=True,null=True)
     RAC_IP = models.IPAddressField(blank=True,null=True)
+    NAS_IP = models.IPAddressField(blank=True,null=True)
+    VIP = models.IPAddressField(blank=True,null=True)
     WAN_mac = models.CharField(max_length=20,blank=True,null=True)
     LAN_mac = models.CharField(max_length=20,blank=True,null=True)
     RAC_mac = models.CharField(max_length=20,blank=True,null=True)
@@ -115,6 +132,8 @@ class HostVirtual(models.Model):
     Memory_Size = models.CharField(max_length=20,blank=True,null=True)
     Disk_Size = models.CharField(max_length=20,blank=True,null=True)
     Manage_IP = models.IPAddressField(blank=True,null=True)
+    NAS_IP = models.IPAddressField(blank=True,null=True)
+    VIP = models.IPAddressField(blank=True,null=True)
     SSH_Port = models.IntegerField(blank=True,null=True)
     LAN_IP = models.IPAddressField(blank=True,null=True)
     WAN_IP = models.IPAddressField(blank=True,null=True)
@@ -139,3 +158,15 @@ class Loginlog(models.Model):
     action = models.IntegerField()
     result = models.IntegerField()
     message = models.CharField(blank=True,null=True,max_length=100)
+
+
+class Accessories_Memory(models.Model):
+    SN = models.CharField(max_length=30)
+    Memory_Type = models.ForeignKey(Memory) 
+    Status = models.IntegerField(blank=True,null=True)
+    Host_IP =  models.IPAddressField(blank=True,null=True)
+class Accessories_Disk(models.Model):
+    SN = models.CharField(max_length=30)
+    Disk_Type = models.ForeignKey(Disk) 
+    Status = models.IntegerField(blank=True,null=True)
+    Host_IP =  models.IPAddressField(blank=True,null=True)

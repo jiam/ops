@@ -7,6 +7,18 @@
     <link href="../css/demo.css" rel="stylesheet" type="text/css" />
 
     <script src="../../scripts/boot.js" type="text/javascript"></script>
+<script type="text/javascript">
+         $.ajax({
+                url: "http://10.100.30.174/cmdb/islogin",
+                success: function (text) {
+                    var o = mini.decode(text);
+                    if (o.result == 'fail') {
+                       // window.location = "http://10.100.30.174/ops/cmdb/html/login.html";
+                       parent.location.reload()
+                    }
+                }
+             });
+    </script>
 </head>
 <body>
     <div style="width:1050px;">
@@ -52,14 +64,14 @@
 
         var grid = mini.get("datagrid1");
         grid.load();
-        grid.sortBy("HostName", "desc");
+        grid.sortBy("id", "desc");
 
         
         function add() {
             
             mini.open({
                 url: bootPATH + "../cmdb/html/host_physical_window.html",
-                title: "新增", width: 700, height: 660,
+                title: "新增", width: 800, height: 660,
                 onload: function () {
                     var iframe = this.getIFrameEl();
                     var data = { action: "new"};
@@ -77,7 +89,7 @@
             if (row) {
                 mini.open({
                     url: bootPATH + "../cmdb/html/host_physical_window.html",
-                    title: "编辑", width: 700, height: 660,
+                    title: "编辑", width: 800, height: 660,
                     onload: function () {
                         var iframe = this.getIFrameEl();
                         var data = { action: "edit", id: row.id };
@@ -101,7 +113,7 @@
             if (row) {
                 mini.open({
                     url: bootPATH + "../cmdb/html/host_physical_details.html",
-                    title: "详细信息", width: 700, height: 600,
+                    title: "详细信息", width: 800, height: 660,
                     onload: function () {
                         var iframe = this.getIFrameEl();
                         var data = { action: "details", id: row.id };
