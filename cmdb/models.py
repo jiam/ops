@@ -46,6 +46,8 @@ class IDC(models.Model):
     IDC_Contact = models.CharField(max_length=100)
     IDC_Phone = models.CharField(max_length=20)
     IDC_Email = models.CharField(max_length=50)
+    def __unicode__(self):
+        return self.IDC_Name
 
 class Rack(models.Model):
     Rack_Name = models.CharField(max_length=30)
