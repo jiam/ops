@@ -36,9 +36,9 @@ def logout(request):
         username = request.user.username
         auth.logout(request)
         cmdb_log.log_logoff(username)
-        return HttpResponseRedirect("http://10.100.30.174/ops/cmdb/html/login.html")
+        return HttpResponseRedirect("http://cmdb.ops.creditease.corp/ops/cmdb/html/login.html")
     else:
-        return HttpResponseRedirect("http://10.100.30.174/ops/cmdb/html/login.html")
+        return HttpResponseRedirect("http://cmdb.ops.creditease.corp/ops/cmdb/html/login.html")
 
 def islogin(request):
     if not request.user.is_authenticated():
@@ -56,7 +56,7 @@ def get_userinfo(request):
     
 def get_user_list(request):
     #return render(request,'user.html')
-    return HttpResponseRedirect("http://10.100.30.174/cmdb/admin/auth/user/")
+    return HttpResponseRedirect("http://cmdb.ops.creditease.corp/cmdb/admin/auth/user/")
 @csrf_exempt
 def get_login_log(request):
     if not request.user.is_authenticated():

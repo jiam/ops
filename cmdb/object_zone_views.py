@@ -54,7 +54,7 @@ def zone_get(request):
 @csrf_exempt
 def zone_search(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect("http://10.100.30.174/ops/cmdb/html/login.html")
+        return HttpResponseRedirect("http://cmdb.ops.creditease.corp/ops/cmdb/html/login.html")
     json_str =request.body
     data = json.loads(json_str)
     key = data['key']

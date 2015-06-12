@@ -62,7 +62,7 @@
             var data = form.getData();      //获取表单多个控件的数据
             var json = mini.encode(data);   //序列化成JSON
             $.ajax({
-                url: "http://10.100.30.174/cmdb/login",
+                url: "http://cmdb.ops.creditease.corp/cmdb/login",
                 type: "post",
                 data: json,
                 success: function (text) {
@@ -71,7 +71,7 @@
                       loginWindow.hide();
                       //mini.loading("登录成功，马上转到系统...", "登录成功");
                       setTimeout(function () {
-                        window.location = "http://10.100.30.174/ops/cmdb/html/index.html";
+                        window.location = "http://cmdb.ops.creditease.corp/ops/cmdb/html/index.html";
                       }, 500);
                       }
                     else {
@@ -79,7 +79,7 @@
                          return;
                          }
                     //setTimeout(function () {
-                     //  window.location = "http://10.100.30.174/ops/cmdb/html/index.html";
+                     //  window.location = "http://cmdb.ops.creditease.corp/ops/cmdb/html/index.html";
                     //}, 1500);
 
                 }

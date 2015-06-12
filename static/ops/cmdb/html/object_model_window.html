@@ -34,7 +34,7 @@
                     <td style="width:90px;">所属厂商：</td>
                     <td style="width:200px;">    
                         <input name="Vendor_id" class="mini-combobox" valueField="id" textField="Vendor_Name" 
-                           url="http://10.100.30.174/cmdb/object/vendor/get"
+                           url="http://cmdb.ops.creditease.corp/cmdb/object/vendor/get"
                            required="true"
                            emptyText="请选厂商"
                         />
@@ -61,7 +61,7 @@
 
             var json = mini.encode(o);
             $.ajax({
-                url: "http://10.100.30.174/cmdb/object/model/save",
+                url: "http://cmdb.ops.creditease.corp/cmdb/object/model/save",
 		type: 'post',
                 data: json,
                 cache: false,
@@ -86,7 +86,7 @@
                 //var json_post  = mini.encode({'key':'id','id':data.id})
 
                 $.ajax({
-                    url: "http://10.100.30.174/cmdb/object/model/get",
+                    url: "http://cmdb.ops.creditease.corp/cmdb/object/model/get",
                     type: 'post',
                     data: {'key':'id','id':data.id},
                     cache: false,

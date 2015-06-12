@@ -40,7 +40,7 @@
                     <td style="width:90px;">硬盘型号：</td>
                     <td style="width:200px;">    
                         <input name="Disk_Type_id" class="mini-combobox" valueField="id" textField="Disk_Type" 
-                           url="http://10.100.30.174/cmdb/object/disk/get"
+                           url="http://cmdb.ops.creditease.corp/cmdb/object/disk/get"
                            required="true"
                         />
                     </td>
@@ -69,7 +69,7 @@
 
             var json = mini.encode(o);
             $.ajax({
-                url: "http://10.100.30.174/cmdb/accessories/disk/save",
+                url: "http://cmdb.ops.creditease.corp/cmdb/accessories/disk/save",
 		type: 'post',
                 data: json,
                 cache: false,
@@ -94,7 +94,7 @@
                 //var json_post  = mini.encode({'key':'id','id':data.id})
 
                 $.ajax({
-                    url: "http://10.100.30.174/cmdb/accessories/disk/get",
+                    url: "http://cmdb.ops.creditease.corp/cmdb/accessories/disk/get",
                     type: 'post',
                     data: {'key':'id','id':data.id},
                     cache: false,

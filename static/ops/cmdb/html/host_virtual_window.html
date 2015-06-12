@@ -43,14 +43,14 @@
                     <td style="width:90px;">系统名称：</td>
                     <td style="width:200px;">
                         <input name="os_id" class="mini-combobox" valueField="id" textField="OS_Name" 
-                          url="http://10.100.30.174/cmdb/object/os/get"
+                          url="http://cmdb.ops.creditease.corp/cmdb/object/os/get"
                           required="true"
                         />
                     </td>
                     <td style="width:90px;">内核版本：</td>
                     <td style="width:200px;">    
                         <input name="kernel_id" class="mini-combobox" valueField="id" textField="Kernel_Name" 
-                          url="http://10.100.30.174/cmdb/object/kernel/get"
+                          url="http://cmdb.ops.creditease.corp/cmdb/object/kernel/get"
                           required="true"
                         />
                     </td>
@@ -69,14 +69,14 @@
                     <td style="width:90px;">业务名称：</td>
                     <td style="width:200px;">
                         <input name="service_id" class="mini-combobox" valueField="id" textField="Service_Name" 
-                          url="http://10.100.30.174/cmdb/object/service/get"
+                          url="http://cmdb.ops.creditease.corp/cmdb/object/service/get"
                           required="true"
                         />
                     </td>
                     <td style="width:90px;">部门名称：</td>
                     <td style="width:200px;">    
                         <input name="department_id" class="mini-combobox" valueField="id" textField="Department_Name" 
-                          url="http://10.100.30.174/cmdb/object/department/get"
+                          url="http://cmdb.ops.creditease.corp/cmdb/object/department/get"
                           required="true"
                         />
                     </td>
@@ -194,7 +194,7 @@
 
             var json = mini.encode(o);
             $.ajax({
-                url: "http://10.100.30.174/cmdb/host/virtual/save",
+                url: "http://cmdb.ops.creditease.corp/cmdb/host/virtual/save",
 		type: 'post',
                 data: json,
                 cache: false,
@@ -219,7 +219,7 @@
                  //var json_post  = mini.encode({'key':'id','id':data.id})
 
                 $.ajax({
-                    url: "http://10.100.30.174/cmdb/host/virtual/get",
+                    url: "http://cmdb.ops.creditease.corp/cmdb/host/virtual/get",
                     type: 'post',
                     data: {'key':'id','id':data.id},
                     cache: false,
@@ -261,14 +261,14 @@
             var IDCCombo = mini.getbyName("IDC_id")
             var ZoneCombo =  mini.getbyName("Zone_id")
             var IDC_id = IDCCombo.getValue();
-            ZoneCombo.load("http://10.100.30.174/cmdb/object/zone/get/" + IDC_id);
+            ZoneCombo.load("http://cmdb.ops.creditease.corp/cmdb/object/zone/get/" + IDC_id);
             ZoneCombo.setValue("");
         }
         function onVendorChanged(e) {
             var VendorCombo = mini.getbyName("Vendor_id")
             var ModelCombo =  mini.getbyName("Model_id")
             var Vendor_id = VendorCombo.getValue();
-            ModelCombo.load("http://10.100.30.174/cmdb/object/model/get/" + Vendor_id);
+            ModelCombo.load("http://cmdb.ops.creditease.corp/cmdb/object/model/get/" + Vendor_id);
             ModelCombo.setValue("");
         }
 

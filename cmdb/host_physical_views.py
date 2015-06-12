@@ -6,10 +6,11 @@ from cmdb.models import *
 import json
 import urllib
 import cmdb_log
-
+from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt  
+@cache_page(60 * 15)
 def physical_get(request):
     if not request.user.is_authenticated():
         json_r = json.dumps({"result":"no login"})
@@ -24,9 +25,9 @@ def physical_get(request):
         start = int(pageIndex)*int(pageSize)
         stop = int(pageIndex)*int(pageSize) + int(pageSize)
         if sortOrder == 'asc':
-            physicals = HostPhysical.objects.select_related().all().order_by(sortField)
+            physicals = HostPhysical.objects.select_related('Manag_IP').all().order_by(sortField)
         else:
-            physicals = HostPhysical.objects.select_related().all().order_by('-'+sortField)
+            physicals = HostPhysical.objects.select_related('Manage_IP').all().order_by('-'+sortField)
         for physical in physicals:
             physical_d = {'id':physical.id,
                           'HostName':physical.HostName,
@@ -274,7 +275,7 @@ def physical_get_details(request):
 @csrf_exempt
 def physical_search(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect("http://10.100.30.174/ops/cmdb/html/login.html")
+        return HttpResponseRedirect("http://cmdb.ops.creditease.corp/ops/cmdb/html/login.html")
     json_str =request.body
     data = json.loads(json_str)
     physical_list = []
