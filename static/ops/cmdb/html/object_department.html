@@ -27,7 +27,7 @@
         </div>
     </div>
     <div id="datagrid1" class="mini-datagrid" style="width:800px;height:280px;" allowResize="true"
-        url="http://cmdb.ops.creditease.corp/cmdb/object/department/get"  idField="id" multiSelect="true" 
+        url="/cmdb/object/department/get"  idField="id" multiSelect="true" 
     >
         <div property="columns">
             <!--<div type="indexcolumn"></div>        -->
@@ -99,7 +99,7 @@
                     var id = mini.encode({'id':ids.join(',')})
                     grid.loading("操作中，请稍后......");
                     $.ajax({
-                        url: "http://cmdb.ops.creditease.corp/cmdb/object/department/del",
+                        url: "/cmdb/object/department/del",
                         type: "post",
                         data: id,
                         success: function (text) {

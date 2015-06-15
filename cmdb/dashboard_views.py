@@ -12,7 +12,7 @@ from django.contrib import auth
     
 def dashboard_host(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect("http://cmdb.ops.creditease.corp/ops/cmdb/html/login.html")
+        return HttpResponseRedirect("/ops/cmdb/html/login.html")
     physicals = HostPhysical.objects.all()
     virtuals = HostVirtual.objects.all()
     data = {'x':["物理主机","虚拟主机"],'y':[len(physicals),len(virtuals)]}
@@ -21,7 +21,7 @@ def dashboard_host(request):
 
 def dashboard_os(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect("http://cmdb.ops.creditease.corp/ops/cmdb/html/login.html")
+        return HttpResponseRedirect("/ops/cmdb/html/login.html")
     data = []
     oss = list(HostVirtual.objects.values('os').annotate(dcount=Count('os')))
     count = len(HostVirtual.objects.all())

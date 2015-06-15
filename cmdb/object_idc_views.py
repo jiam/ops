@@ -34,7 +34,7 @@ def idc_get(request):
 @csrf_exempt
 def idc_search(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect("http://cmdb.ops.creditease.corp/ops/cmdb/html/login.html")
+        return HttpResponseRedirect("/ops/cmdb/html/login.html")
     json_str =request.body
     data = json.loads(json_str)
     key = data['key']

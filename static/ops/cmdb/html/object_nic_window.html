@@ -52,7 +52,7 @@
 
             var json = mini.encode(o);
             $.ajax({
-                url: "http://cmdb.ops.creditease.corp/cmdb/object/nic/save",
+                url: "/cmdb/object/nic/save",
 		type: 'post',
                 data: json,
                 cache: false,
@@ -77,7 +77,7 @@
                  //var json_post  = mini.encode({'key':'id','id':data.id})
 
                 $.ajax({
-                    url: "http://cmdb.ops.creditease.corp/cmdb/object/nic/get",
+                    url: "/cmdb/object/nic/get",
                     type: 'post',
                     data: {'key':'id','id':data.id},
                     cache: false,

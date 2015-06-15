@@ -34,7 +34,7 @@
                     <td style="width:90px;">所属机房：</td>
                     <td style="width:200px;">    
                         <input name="IDC_id" class="mini-combobox" valueField="id" textField="IDC_Name" 
-                           url="http://cmdb.ops.creditease.corp/cmdb/object/idc/get"
+                           url="/cmdb/object/idc/get"
                            required="true"
                            emptyText="请选机房"
                         />
@@ -61,7 +61,7 @@
 
             var json = mini.encode(o);
             $.ajax({
-                url: "http://cmdb.ops.creditease.corp/cmdb/object/zone/save",
+                url: "/cmdb/object/zone/save",
 		type: 'post',
                 data: json,
                 cache: false,
@@ -86,7 +86,7 @@
                 //var json_post  = mini.encode({'key':'id','id':data.id})
 
                 $.ajax({
-                    url: "http://cmdb.ops.creditease.corp/cmdb/object/zone/get",
+                    url: "/cmdb/object/zone/get",
                     type: 'post',
                     data: {'key':'id','id':data.id},
                     cache: false,

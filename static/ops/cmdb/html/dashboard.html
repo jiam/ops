@@ -22,7 +22,7 @@ $(document).ready(function() {
             data: []
         }]
     };
- var url =  "http://cmdb.ops.creditease.corp/cmdb/dashboard/host";
+ var url =  "/cmdb/dashboard/host";
     $.getJSON(url,  function(data) {
         options.series[0].data = data["y"];
         options.xAxis.categories =  data["x"];
@@ -56,7 +56,7 @@ $(document).ready(function() {
             data: []
         }]
     };
- var url =  "http://cmdb.ops.creditease.corp/cmdb/dashboard/os";
+ var url =  "/cmdb/dashboard/os";
     $.getJSON(url,  function(data) {
         options.series[0].data = data 
         var chart = new Highcharts.Chart(options);

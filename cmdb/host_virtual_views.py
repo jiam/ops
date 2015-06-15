@@ -196,7 +196,7 @@ def virtual_get_details(request):
 @csrf_exempt
 def virtual_search(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect("http://cmdb.ops.creditease.corp/ops/cmdb/html/login.html")
+        return HttpResponseRedirect("/ops/cmdb/html/login.html")
     json_str =request.body
     data = json.loads(json_str)
     virtual_list = []
