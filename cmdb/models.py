@@ -18,6 +18,9 @@ class Kernel(models.Model):
 class CPU(models.Model):
     CPU_Type = models.CharField(max_length=30)
     CPU_Cores = models.IntegerField()
+    CPU_Logical_Cores = models.IntegerField()
+    CPU_Frequency = models.CharField(max_length=30)
+   
 
 class Memory(models.Model):
     Memory_Type = models.CharField(max_length=30)

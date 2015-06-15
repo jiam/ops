@@ -60,10 +60,10 @@ def cpu_save(request):
     if  data['id']:
         i = CPU.objects.filter(id=data['id'])
         message = cmdb_log.cmp(list(i.values())[0],data)
-        i.update(CPU_Type = data['CPU_Type'],CPU_Cores = data['CPU_Cores'])
+        i.update(CPU_Type = data['CPU_Type'],CPU_Cores = data['CPU_Cores'],CPU_Logical_Cores=data['CPU_Logical_Cores'],CPU_Frequency=data['CPU_Frequency'])
         cmdb_log.log_change(request,i[0],data['CPU_Type'],message)
     else:
-        i = CPU(CPU_Type = data['CPU_Type'],CPU_Cores = data['CPU_Cores'])
+        i = CPU(CPU_Type = data['CPU_Type'],CPU_Cores = data['CPU_Cores'],CPU_Logical_Cores=data['CPU_Logical_Cores'],CPU_Frequency=data['CPU_Frequency'])
         i.save()
         cmdb_log.log_addition(request,i,data['CPU_Type'],data)
     json_r = json.dumps({"result":"save sucess"})
