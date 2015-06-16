@@ -26,7 +26,7 @@ class Memory(models.Model):
     Memory_Type = models.CharField(max_length=30)
 
 class Disk(models.Model):
-    Disk_Type = models.CharField(max_length=30)
+    Disk_Type = models.CharField(max_length=150)
 
 class HBA(models.Model):
     HBA_Type = models.CharField(max_length=30)
@@ -96,7 +96,7 @@ class HostPhysical(models.Model):
     Memory_Size = models.CharField(max_length=20,blank=True,null=True) 
     disk = models.ForeignKey(Disk)
     Disk_Solt_Number = models.IntegerField(blank=True,null=True)
-    Disk_Number = models.IntegerField(blank=True,null=True)
+    Disk_Number = models.CharField(max_length=20,blank=True,null=True)
     Disk_Size = models.CharField(max_length=20,blank=True,null=True) 
     hba = models.ForeignKey(HBA)
     HBA_Number = models.IntegerField(blank=True,null=True)
