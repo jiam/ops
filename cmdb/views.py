@@ -52,11 +52,36 @@ def islogin(request):
         r_json = json.dumps(r)
         return HttpResponse(r_json)
 def get_userinfo(request):
-    return HttpResponse(request.user)
+    return HttpResponse(request.user.last_name+request.user.first_name)
     
 def get_user_list(request):
     #return render(request,'user.html')
     return HttpResponseRedirect("/cmdb/admin/auth/user/")
+
+@csrf_exempt
+def changepasswd(request):
+    if not request.user.is_authenticated():
+        json_r = json.dumps({"result":"no login"})
+        return HttpResponse(json_r)
+    elif not request.user.has_perm('auth.change_user'):
+        json_r = json.dumps({"result":"no permission"})
+        return HttpResponse(json_r)
+    data = json.loads(request.body)
+    oldpwd = data['oldpwd']
+    newpwd = data['newpwd']
+    if request.user.check_password(oldpwd):
+        request.user.set_password(newpwd)
+        request.user.save()
+        data = {"result":"sucess"}
+        json_r = json.dumps(data)
+        return HttpResponse(json_r)    
+    else:
+        data = {"result":"failed"}
+        json_r = json.dumps(data)
+        return HttpResponse(json_r)    
+        
+    
+    
 @csrf_exempt
 def get_login_log(request):
     if not request.user.is_authenticated():
