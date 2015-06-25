@@ -78,7 +78,7 @@ def kernel_del(request):
         return HttpResponse(json_r)
     json_str =request.body
     data = json.loads(json_str)
-    ids = data['id']
+    ids = data['id'].split()
     for del_id in ids:
         i = Kernel.objects.filter(id=del_id)
         cmdb_log.log_deletion(request,i[0],i[0].Kernel_Name,data)

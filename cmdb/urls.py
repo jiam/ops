@@ -23,12 +23,15 @@ import host_physical_views
 import host_virtual_views
 import accessories_memory_views
 import accessories_disk_views
+import search_views
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'ops.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+    #url(r'^search/', include('haystack.urls')),
+    url(r'^search/', search_views.search),
     url(r'^login$',views.login),
     url(r'^islogin$',views.islogin),
     url(r'^logout$',views.logout),
