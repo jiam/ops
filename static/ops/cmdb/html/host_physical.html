@@ -32,7 +32,7 @@
                         <a class="mini-button" iconCls="icon-add" onclick="details()">详细信息</a>       
                     </td>
                     <td style="white-space:nowrap;">
-                        <input id="key" class="mini-combobox" url="../data/physical_search.txt" />
+                        <input id="key" class="mini-combobox" url="../data/physical_search.txt"  />
                         <input id="search" class="mini-textbox"  style="width:150px;" onenter="onKeyEnter"/>   
                         <a class="mini-button" onclick="search()">查询</a>
                     </td>
@@ -61,6 +61,7 @@
 
     <script type="text/javascript">
         mini.parse();
+        mini.get("key").select(0);
 
         var grid = mini.get("datagrid1");
         grid.load();
