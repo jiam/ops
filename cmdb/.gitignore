@@ -1,4 +1,3 @@
 uwsgi.pid
 uwsgi.log
 *.pyc
-*.pyc
