@@ -170,9 +170,9 @@
                  //var json_post  = mini.encode({'key':'id','id':data.id})
 
                 $.ajax({
-                    url: "/cmdb/host/virtual/get/details",
-                    type: 'post',
-                    data: {'key':'id','id':data.id},
+                    url: "/cmdb/host/virtual/get/details/"+data.id,
+                    type: 'get',
+                   // data: {'key':'id','id':data.id},
                     cache: false,
                     success: function (text) {
                        var o = mini.decode(text);

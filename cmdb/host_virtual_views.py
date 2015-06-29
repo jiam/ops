@@ -158,11 +158,12 @@ def virtual_get(request):
 
 
 @csrf_exempt
-def virtual_get_details(request):
+def virtual_get_details(request,id):
     if not request.user.is_authenticated():
         json_r = json.dumps({"result":"no login"})
         return HttpResponse(json_r)
-    id = request.POST.get('id')
+    #id = request.POST.get('id')
+    id = id
     virtual = HostVirtual.objects.get(id=id)
     virtual_d = {'id':virtual.id,
                  'HostName': virtual.HostName,

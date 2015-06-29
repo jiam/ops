@@ -218,11 +218,12 @@ def physical_get(request):
 
 
 @csrf_exempt
-def physical_get_details(request):
+def physical_get_details(request,id):
     if not request.user.is_authenticated():
         json_r = json.dumps({"result":"no login"})
         return HttpResponse(json_r)
-    id = request.POST.get('id')
+    #id = request.POST.get('id')
+    id = id
     physical = HostPhysical.objects.get(id=id)
     physical_d = {'id':physical.id,
                   'HostName':physical.HostName,

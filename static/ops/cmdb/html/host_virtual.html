@@ -40,7 +40,7 @@
             </table>           
         </div>
     </div>
-    <div id="datagrid1" class="mini-datagrid" style="width:1050px;height:280px;" allowResize="true"
+    <div id="datagrid1" class="mini-datagrid" style="width:1050px;height:520px;" allowResize="true"
         url="/cmdb/host/virtual/get"  idField="id" multiSelect="true" 
     >
         <div property="columns">
@@ -63,7 +63,7 @@
         mini.get("key").select(0);
 
         var grid = mini.get("datagrid1");
-        grid.load();
+        grid.load({pageSize:20});
         grid.sortBy("Manage_IP", "desc");
 
         

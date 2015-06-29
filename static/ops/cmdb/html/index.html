@@ -114,6 +114,7 @@
         iframe.src = "./dashboard.html"
         function search() { 
             var q = mini.get("key").getValue();
+            q = mini.encode(q);
             iframe.src="/cmdb/search?q="+q;
         }
 
