@@ -424,6 +424,8 @@ def physical_save(request):
              kernel = kernel,
              service = service,
              department = department,
+             User = data['User'],
+             UseInfo = data['UseInfo'],
              idc = idc,
              rack = rack,
              Rack_Position = data['Rack_Position'],

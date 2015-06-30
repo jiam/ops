@@ -15,8 +15,8 @@ from django.contrib.contenttypes.models import ContentType
 
 def search(request):
     q = request.GET['q']
-    solr_url="http://127.0.0.1:8983/solr/cmdb/select?q=%s&wt=json&indent=true" % q
-    query_set =  urllib.urlopen(solr_url.encode('utf-8')).read()
+    solr_url="http://127.0.0.1:8983/solr/cmdb/select?q=" + urllib.quote(q.encode('utf-8')) + "&wt=json&indent=true"
+    query_set =  urllib.urlopen(solr_url).read()
     items = json.loads(query_set)['response']['docs']
     hostphysicals = []
     hostvirtuals = []
@@ -27,6 +27,7 @@ def search(request):
             hostvirtuals.append(item)
     context = {'hostphysicals':hostphysicals,'hostvirtuals':hostvirtuals}
     return render(request,'search/search.html',context)
+    #return HttpResponse(solr_url.encode('utf-8')) 
 
     
     
