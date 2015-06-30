@@ -451,6 +451,7 @@ def physical_save(request):
              Manage_IP = data['Manage_IP'],
              RAC_IP = data['RAC_IP'],
              NAS_IP = data['NAS_IP'],
+             VIP = data['VIP'],
              Purchasing_Time = data['Purchasing_Time'][0:10],
              Guarantee_Time = data['Guarantee_Time'][0:10],
              Change_Time = data['Change_Time'][0:10],
