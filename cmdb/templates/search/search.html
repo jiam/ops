@@ -17,8 +17,11 @@
     <tr>
       <th>主机名</th>
       <th>管理ip</th>
+      <th>部门</th>
+      <th>业务</th>
       <th>宿主机ip</th>
       <th>使用者</th>
+      <th>用途</th>
       <th>#</th>
     </tr>
   </thead>
@@ -27,8 +30,11 @@
     <tr>
       <td>{{ hostvirtual.hostname | first }} </td>
       <td>{{ hostvirtual.manage_ip | first }} </td>
+      <td>{{ hostphysical.department_name | first }} </td>
+      <td>{{ hostphysical.service_name | first }} </td>
       <td>{{ hostvirtual.physical_host_ip | first }} </td>
       <td>{{ hostvirtual.user | first }} </td>
+      <td>{{ hostphysical.useinfo | first }} </td>
       <td><button onclick=details({{ hostvirtual.django_id }},"host_virtual_details.html")>详细信息</button> </td>
     </tr>
     {% endfor %}
@@ -42,7 +48,11 @@
     <tr>
       <th>主机名</th>
       <th>管理ip</th>
+      <th>部门</th>
+      <th>业务</th>
       <th>使用者</th>
+      <th>远程管理卡ip</th>
+      <th>用途</th>
     </tr>
   </thead>
   <tbody>
@@ -50,7 +60,11 @@
     <tr>
       <td>{{ hostphysical.hostname | first }} </td>
       <td>{{ hostphysical.manage_ip | first }} </td>
+      <td>{{ hostphysical.department_name | first }} </td>
+      <td>{{ hostphysical.service_name | first }} </td>
       <td>{{ hostphysical.user | first }} </td>
+      <td>{{ hostphysical.rac_ip | first }} </td>
+      <td>{{ hostphysical.useinfo | first }} </td>
       <td><button onclick=details({{ hostphysical.django_id }},"host_physical_details.html")>详细信息</button> </td>
     </tr>
     {% endfor %}
