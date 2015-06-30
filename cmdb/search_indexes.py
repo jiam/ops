@@ -18,6 +18,8 @@ class hostvirtualIndex(indexes.SearchIndex,indexes.Indexable):
 class hostphysicalIndex(indexes.SearchIndex,indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     hostname = indexes.CharField(model_attr='HostName')
+    sn = indexes.CharField(model_attr='SN')
+    assert_sn = indexes.CharField(model_attr='Asset_SN')
     manage_ip = indexes.CharField(model_attr='Manage_IP')
     rac_ip = indexes.CharField(model_attr='RAC_IP')
     vip = indexes.CharField(model_attr='VIP',null=True)

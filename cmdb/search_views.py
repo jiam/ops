@@ -14,6 +14,9 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 
 def search(request):
+    if not request.user.is_authenticated():
+        json_r = json.dumps({"result":"no login"})
+        return HttpResponse(json_r)
     q = request.GET['q']
     solr_url="http://127.0.0.1:8983/solr/cmdb/select?q=" + urllib.quote(q.encode('utf-8')) + "&wt=json&indent=true"
     query_set =  urllib.urlopen(solr_url).read()
