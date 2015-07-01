@@ -1,4 +1,4 @@
-#_*_ coding: utf-8 _*_
+# -*- coding: utf-8 -*-
 from __future__ import division
 from django.shortcuts import render
 from django.http import HttpResponse
