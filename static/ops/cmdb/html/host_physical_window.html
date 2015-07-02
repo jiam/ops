@@ -54,6 +54,7 @@
                     <td style="width:90px;">型号：</td>
                     <td style="width:150px;">    
                         <input name="model_id" class="mini-combobox" valueField="id" textField="Model_Name" 
+                          url="/cmdb/object/model/get"
                           required="true"
                         />
                     </td>
@@ -367,6 +368,16 @@
                        mini.getbyName("pcie_id").setValue(o.PCIE_id);
                        mini.getbyName("nic_id").setValue(o.NIC_id);
                        mini.getbyName("zone_id").setValue(o.Zone_id);
+                       var IDCCombo = mini.getbyName("idc_id")
+                       var RackCombo =  mini.getbyName("rack_id")
+                       var ZoneCombo = mini.getbyName("zone_id")
+                       var VendorCombo = mini.getbyName("vendor_id")
+                       var ModelCombo = mini.getbyName("model_id")
+                       var IDC_id = IDCCombo.getValue();
+                       var Vendor_id = VendorCombo.getValue();
+                       RackCombo.load("/cmdb/object/rack/get/" + IDC_id);
+                       ZoneCombo.load("/cmdb/object/zone/get/" + IDC_id);
+                       ModelCombo.load("/cmdb/object/model/get/" + Vendor_id);
                        
                     }
                 });
