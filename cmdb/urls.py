@@ -24,6 +24,7 @@ import host_virtual_views
 import accessories_memory_views
 import accessories_disk_views
 import search_views
+import api_views
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'ops.views.home', name='home'),
@@ -32,6 +33,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     #url(r'^search/', include('haystack.urls')),
     url(r'^search/', search_views.search),
+    url(r'^api/token$', api_views.get_token),
     url(r'^login$',views.login),
     url(r'^islogin$',views.islogin),
     url(r'^logout$',views.logout),
