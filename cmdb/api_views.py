@@ -7,18 +7,20 @@ import json
 
 @csrf_exempt
 def  get_token(request):
-    json_str =request.body
+    json_str = request.body
     data = json.loads(json_str)
     username = data['username']
     password = data['password']  
     user = auth.authenticate(username=username, password=password)
     if user is not None and user.is_active:
-        try:
-            token = Token.objects.get(user=user)
-        except Exception:
-            token = Token.objects.create(user=user)
-        return HttpResponse(token)
+        token,created = Token.objects.get_or_create(user=user)
+        data = {'result':token.key} 
+        response = json.dumps(data)
+        return HttpResponse(response)
     else:
-       return HttpResponse('user error')
+        data = {'result':'auth failed'}
+        response = json.dumps(data)
+        return HttpResponse(response)
+    
         
 

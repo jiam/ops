@@ -41,7 +41,7 @@ class hostphysicalIndex(indexes.SearchIndex,indexes.Indexable):
     def get_model(self):
         return HostPhysical
     def index_queryset(self,using=None):
-        return self.get_model().objects.select_related().all()
+        return self.get_model().objects.select_related('Manag_IP').all()
     def prepare_idc_name(self, obj):
         return obj.idc.IDC_Name
     def prepare_vendor_name(self, obj):
