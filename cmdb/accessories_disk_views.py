@@ -32,7 +32,7 @@ def disk_get(request):
                         'SN':disk.SN,
                         'Disk_Type':disk.Disk_Type.Disk_Type,
                         'Status':disk.Status,
-                        'Host_IP':disk.Host_IP
+                        'Host_SN':disk.Host_SN
                           }
             disk_list.append(disk_d)
         data = {"total":len(disk_list),"data":disk_list[start:stop]}
@@ -50,7 +50,7 @@ def disk_get(request):
                         'SN':disk.SN,
                         'Disk_Type':disk.Disk_Type.Disk_Type,
                         'Status':disk.Status,
-                        'Host_IP':disk.Host_IP
+                        'Host_SN':disk.Host_SN
                           }
             disk_list.append(disk_d)
         data = {"total":len(disk_list),"data":disk_list}
@@ -63,13 +63,13 @@ def disk_get(request):
         start = int(pageIndex)*int(pageSize)
         stop = int(pageIndex)*int(pageSize) + int(pageSize)
         ip = request.POST.get('search')
-        disks = Accessories_Disk.objects.filter(Host_IP=ip)
+        disks = Accessories_Disk.objects.filter(Host_SN=ip)
         for disk in disks:
             disk_d = {'id':disk.id,
                         'SN':disk.SN,
                         'Disk_Type':disk.Disk_Type.Disk_Type,
                         'Status':disk.Status,
-                        'Host_IP':disk.Host_IP
+                        'Host_SN':disk.Host_SN
                           }
             disk_list.append(disk_d)
         data = {"total":len(disk_list),"data":disk_list[start:stop]}
@@ -105,15 +105,15 @@ def disk_save(request):
         i = Accessories_Disk.objects.filter(id=data['id'])
         message = cmdb_log.cmp(list(i.values())[0],data)
         disk = Disk.objects.get(id=data['Disk_Type_id'])
-        i.update(Host_IP = data['Host_IP'],
+        i.update(Host_SN = data['Host_SN'],
                  Status = data['Status'],
                  Disk_Type = disk,
                  SN = data['SN'],
                  )
-        cmdb_log.log_change(request,i[0],data['Host_IP'],message)
+        cmdb_log.log_change(request,i[0],data['Host_SN'],message)
     else:
         disk = Disk.objects.get(id=data['Disk_Type_id'])
-        i = Accessories_Disk(Host_IP = data['Host_IP'],
+        i = Accessories_Disk(Host_SN = data['Host_SN'],
                                Status = data['Status'],
                                Disk_Type = disk,
                                SN = data['SN'],

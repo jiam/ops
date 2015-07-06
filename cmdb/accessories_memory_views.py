@@ -32,7 +32,7 @@ def memory_get(request):
                         'SN':memory.SN,
                         'Memory_Type':memory.Memory_Type.Memory_Type,
                         'Status':memory.Status,
-                        'Host_IP':memory.Host_IP
+                        'Host_SN':memory.Host_SN
                           }
             memory_list.append(memory_d)
         data = {"total":len(memory_list),"data":memory_list[start:stop]}
@@ -50,7 +50,7 @@ def memory_get(request):
                         'SN':memory.SN,
                         'Memory_Type':memory.Memory_Type.Memory_Type,
                         'Status':memory.Status,
-                        'Host_IP':memory.Host_IP
+                        'Host_SN':memory.Host_SN
                           }
             memory_list.append(memory_d)
         data = {"total":len(memory_list),"data":memory_list}
@@ -63,13 +63,13 @@ def memory_get(request):
         start = int(pageIndex)*int(pageSize)
         stop = int(pageIndex)*int(pageSize) + int(pageSize)
         ip = request.POST.get('search')
-        memorys = Accessories_Memory.objects.filter(Host_IP=ip)
+        memorys = Accessories_Memory.objects.filter(Host_SN=ip)
         for memory in memorys:
             memory_d = {'id':memory.id,
                         'SN':memory.SN,
                         'Memory_Type':memory.Memory_Type.Memory_Type,
                         'Status':memory.Status,
-                        'Host_IP':memory.Host_IP
+                        'Host_SN':memory.Host_SN
                           }
             memory_list.append(memory_d)
         data = {"total":len(memory_list),"data":memory_list[start:stop]}
@@ -105,15 +105,15 @@ def memory_save(request):
         i = Accessories_Memory.objects.filter(id=data['id'])
         message = cmdb_log.cmp(list(i.values())[0],data)
         memory = Memory.objects.get(id=data['Memory_Type_id'])
-        i.update(Host_IP = data['Host_IP'],
+        i.update(Host_SN = data['Host_SN'],
                  Status = data['Status'],
                  Memory_Type = memory,
                  SN = data['SN'],
                  )
-        cmdb_log.log_change(request,i[0],data['Host_IP'],message)
+        cmdb_log.log_change(request,i[0],data['Host_SN'],message)
     else:
         memory = Memory.objects.get(id=data['Memory_Type_id'])
-        i = Accessories_Memory(Host_IP = data['Host_IP'],
+        i = Accessories_Memory(Host_SN = data['Host_SN'],
                                Status = data['Status'],
                                Memory_Type = memory,
                                SN = data['SN'],

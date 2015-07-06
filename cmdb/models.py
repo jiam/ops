@@ -169,9 +169,11 @@ class Accessories_Memory(models.Model):
     SN = models.CharField(max_length=30)
     Memory_Type = models.ForeignKey(Memory) 
     Status = models.IntegerField(blank=True,null=True)
-    Host_IP =  models.IPAddressField(blank=True,null=True)
+    #Host_IP =  models.IPAddressField(blank=True,null=True)
+    Host_SN = models.CharField(max_length=30)
 class Accessories_Disk(models.Model):
     SN = models.CharField(max_length=30)
     Disk_Type = models.ForeignKey(Disk) 
     Status = models.IntegerField(blank=True,null=True)
-    Host_IP =  models.IPAddressField(blank=True,null=True)
+    #Host_IP =  models.IPAddressField(blank=True,null=True)
+    Host_SN = models.CharField(max_length=30)
