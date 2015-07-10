@@ -340,3 +340,25 @@ def virtual_del(request):
         i.delete()
     json_r = json.dumps({"result":"delete sucess"})
     return HttpResponse(json_r)
+
+
+@csrf_exempt
+def virtual_copy(request):
+    if not request.user.is_authenticated():
+        json_r = json.dumps({"result":"no login"})
+        return HttpResponse(json_r)
+    elif not request.user.has_perm('cmdb.change_hostvirtual'):
+        json_r = json.dumps({"result":"no permission"})
+        return HttpResponse(json_r)
+    json_str =request.body
+    data = json.loads(json_str)
+    copy_id = data['id']
+    source = HostVirtual.objects.filter(id=copy_id)
+    mid = source.values()[0]
+    mid.pop('id')
+    mid['HostName']= mid['HostName']+'copy'
+    dest = HostVirtual(**mid)
+    cmdb_log.log_addition(request,dest,dest.Manage_IP,data)
+    dest.save()
+    json_r = json.dumps({"result":"copy sucess"})
+    return HttpResponse(json_r)

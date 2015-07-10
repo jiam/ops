@@ -1,47 +1,96 @@
 from django.db import models
 
-# Create your models here.
-
 class Vendor(models.Model):
     Vendor_Name = models.CharField(max_length=30)
+    def __unicode__(self):
+        return self.Vendor_Name
+    def natural_key(self):
+        return self.Vendor_Name
 
 class Model(models.Model):
     Model_Name = models.CharField(max_length=30)
     vendor = models.ForeignKey(Vendor)
+    def __unicode__(self):
+        return self.Model_Name
+    def natural_key(self):
+        return self.Model_Name
 
 class OS(models.Model):
     OS_Name = models.CharField(max_length=30)
+    def __unicode__(self):
+        return self.OS_Name
+    def natural_key(self):
+        return self.OS_Name
+
 
 class Kernel(models.Model):
     Kernel_Name = models.CharField(max_length=30)
+    def __unicode__(self):
+        return self.Kernel_Name
+    def natural_key(self):
+        return self.Kernel_Name
 
 class CPU(models.Model):
     CPU_Type = models.CharField(max_length=30)
     CPU_Cores = models.IntegerField()
     CPU_Logical_Cores = models.IntegerField()
     CPU_Frequency = models.CharField(max_length=30)
+    def __unicode__(self):
+        return self.CPU_Type
+    def natural_key(self):
+        return self.CPU_Type
    
 
 class Memory(models.Model):
     Memory_Type = models.CharField(max_length=30)
+    def __unicode__(self):
+        return self.Memory_Type
+    def natural_key(self):
+        return self.Memory_Type
 
 class Disk(models.Model):
     Disk_Type = models.CharField(max_length=150)
+    def __unicode__(self):
+        return self.Disk_Type
+    def natural_key(self):
+        return self.Disk_Type
 
 class HBA(models.Model):
     HBA_Type = models.CharField(max_length=30)
+    def __unicode__(self):
+        return self.HBA_Type
+    def natural_key(self):
+        return self.HBA_Type
+
 class PCIE(models.Model):
     PCIE_Type = models.CharField(max_length=30)
+    def __unicode__(self):
+        return self.PCIE_Type
+    def natural_key(self):
+        return self.PCIE_Type
+
 class NIC(models.Model):
     NIC_Type = models.CharField(max_length=30)
+    def __unicode__(self):
+        return self.NIC_Type
+    def natural_key(self):
+        return self.NIC_Type
 
 class RAID(models.Model):
     RAID_Type = models.CharField(max_length=100)
     RAID_Cache = models.CharField(max_length=30)
     RAID_Battery = models.CharField(max_length=30)
+    def __unicode__(self):
+        return self.RAID_Type
+    def natural_key(self):
+        return self.RAID_Type
 
 class Service(models.Model):
     Service_Name = models.CharField(max_length=30)
+    def __unicode__(self):
+        return self.Service_Name
+    def natural_key(self):
+        return self.Service_Name
 
 class IDC(models.Model):
     IDC_Name = models.CharField(max_length=50)
@@ -51,28 +100,46 @@ class IDC(models.Model):
     IDC_Email = models.CharField(max_length=50)
     def __unicode__(self):
         return self.IDC_Name
+    def natural_key(self):
+        return self.IDC_Name
 
 class Rack(models.Model):
     Rack_Name = models.CharField(max_length=30)
     idc = models.ForeignKey(IDC)
+    def __unicode__(self):
+        return self.Rack_Name
+    def natural_key(self):
+        return self.Rack_Name
 
 class Zone(models.Model):
     Zone_Name = models.CharField(max_length=50)
     idc = models.ForeignKey(IDC)
+    def __unicode__(self):
+        return self.Zone_Name
+    def natural_key(self):
+        return self.Zone_Name
 
 class IP(models.Model):
     IP = models.IPAddressField()
     IP_Type = models.IntegerField()
     Device_id = models.IntegerField()
+    def __unicode__(self):
+        return self.IP
 
 class MAC(models.Model):
     MAC = models.CharField(max_length=50)
     MAC_Type = models.IntegerField()
     Device_id = models.IntegerField()
+    def __unicode__(self):
+        return self.MAC
 
 class Department(models.Model):
     Department_Name = models.CharField(max_length=50)
     Department_Contact = models.CharField(max_length=50)
+    def __unicode__(self):
+        return self.Department_Name
+    def natural_key(self):
+        return self.Department_Name
    
 class HostPhysical(models.Model):
     SN = models.CharField(max_length=30)
@@ -124,6 +191,8 @@ class HostPhysical(models.Model):
     Status = models.IntegerField(blank=True,null=True)
     Remarks =  models.CharField(blank=True,null=True,max_length=100)
     zone = models.ForeignKey(Zone)
+    def __unicode__(self):
+        return self.Manage_IP
 
 
 class HostVirtual(models.Model):
@@ -155,6 +224,8 @@ class HostVirtual(models.Model):
     Up_Time = models.DateField(blank=True,null=True)
     Status = models.IntegerField(blank=True,null=True)
     Remarks =  models.CharField(blank=True,null=True,max_length=100)
+    def __unicode__(self):
+        return self.Manage_IP
 
 
 class Loginlog(models.Model):
