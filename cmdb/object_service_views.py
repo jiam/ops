@@ -84,7 +84,7 @@ def service_del(request):
     for del_id in ids:
         i = Service.objects.filter(id=del_id)
         h = HostPhysical.objects.filter(service=del_id)
-        v = HostVirtual.objects.filter(os=del_id)
+        v = HostVirtual.objects.filter(service=del_id)
         n = len(h)+len(v)
         if n:
             json_r = json.dumps({"result":"include hosts"})

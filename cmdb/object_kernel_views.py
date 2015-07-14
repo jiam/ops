@@ -84,7 +84,7 @@ def kernel_del(request):
     for del_id in ids:
         i = Kernel.objects.filter(id=del_id)
         h = HostPhysical.objects.filter(kernel=del_id)
-        v = HostVirtual.objects.filter(os=del_id)
+        v = HostVirtual.objects.filter(kernel=del_id)
         n = len(h)+len(v)
         if n:
             json_r = json.dumps({"result":"include hosts"})

@@ -85,7 +85,7 @@ def department_del(request):
     for del_id in ids:
         i = Department.objects.filter(id=del_id)
         h = HostPhysical.objects.filter(department=del_id)
-        v = HostVirtual.objects.filter(os=del_id)
+        v = HostVirtual.objects.filter(department=del_id)
         n = len(h)+len(v)
         if n:
             json_r = json.dumps({"result":"include hosts"})
