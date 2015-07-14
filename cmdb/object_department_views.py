@@ -81,7 +81,7 @@ def department_del(request):
         return HttpResponse(json_r)
     json_str =request.body
     data = json.loads(json_str)
-    ids = data['id'].split(,)
+    ids = data['id'].split(',')
     for del_id in ids:
         i = Department.objects.filter(id=del_id)
         h = HostPhysical.objects.filter(department=del_id)
