@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.core  import serializers
 import json
 import cmdb_log
+import urllib
 
 @csrf_exempt
 def  get_token(request):
@@ -367,7 +368,7 @@ def host_physical_update(request):
             params['os'] = OS.objects.get(id=params['os'])
         if 'kernel' in params:
             params['kernel'] = Kernel.objects.get(id=params['kernel'])
-        if 'kernel' in params:
+        if 'service' in params:
             params['service'] = Service.objects.get(id=params['service'])
         if 'department' in params:
             params['department'] = Department.objects.get(id=params['department'])
@@ -435,3 +436,122 @@ def host_physical_get(request):
         response = json.dumps(result)
         return HttpResponse(response)
         
+
+@csrf_exempt
+def host_virtual_add(request):
+    json_str = request.body
+    data = json.loads(json_str)
+    token = data['token']
+    try:
+        result = Token.objects.get(key=token)
+        user_id = result.user_id
+        request.user = User.objects.get(id=user_id)
+    except Token.DoesNotExist:
+        result = {'result':'auth failed'}
+        response = json.dumps(result)
+        return HttpResponse(response)
+    try:
+        params = data['params']
+        params['os'] = OS.objects.get(id=params['os'])
+        params['kernel'] = Kernel.objects.get(id=params['kernel'])
+        params['service'] = Service.objects.get(id=params['service'])
+        params['department'] = Department.objects.get(id=params['department'])
+        host = HostVirtual(**params)
+        host.save()
+        cmdb_log.log_addition(request,host,params['Manage_IP'],params)
+        result = {'result':{'status':1,'info':'virtual host add sucesses'}}
+        response = json.dumps(result)
+        return HttpResponse(response)
+    except Exception,e:
+        result = {'result':{'status':0,'info':str(e)}}
+        response = json.dumps(result)
+        return HttpResponse(response)
+
+
+
+@csrf_exempt
+def host_virtual_update(request):
+    json_str = request.body
+    data = json.loads(json_str)
+    token = data['token']
+    try:
+        result = Token.objects.get(key=token)
+        user_id = result.user_id
+        request.user = User.objects.get(id=user_id)
+    except Token.DoesNotExist:
+        result = {'result':'auth failed'}
+        response = json.dumps(result)
+        return HttpResponse(response)
+    try:
+        params = data['params']
+        id = params.pop('id')
+        host = HostVirtual.objects.filter(id=id)
+        if 'os' in params:
+            params['os'] = OS.objects.get(id=params['os'])
+        if 'kernel' in params:
+            params['kernel'] = Kernel.objects.get(id=params['kernel'])
+        if 'service' in params:
+            params['service'] = Service.objects.get(id=params['service'])
+        if 'department' in params:
+            params['department'] = Department.objects.get(id=params['department'])
+        host.update(**params)
+        cmdb_log.log_change(request,host[0],host[0].Manage_IP,params)
+        result = {'result':{'status':1,'info':'virtual host update sucesses'}}
+        response = json.dumps(result)
+        return HttpResponse(response)
+    except Exception,e:
+        result = {'result':{'status':0,'info':str(e)}}
+        response = json.dumps(result)
+        return HttpResponse(response)
+
+
+@csrf_exempt
+def host_virtual_get(request):
+    json_str = request.body
+    data = json.loads(json_str)
+    token = data['token']
+    try:
+        result = Token.objects.get(key=token)
+        user_id = result.user_id
+        request.user = User.objects.get(id=user_id)
+    except Token.DoesNotExist:
+        result = {'result':'auth failed'}
+        response = json.dumps(result)
+        return HttpResponse(response)
+    try:
+        if 'params' in data:
+            params = data['params']
+            virtuals = HostVirtual.objects.select_related('Manage_IP').filter(**params).order_by('Manage_IP')
+            total = virtuals.count()
+            physicals = serializers.serialize("json",virtuals,use_natural_keys=True)
+            response = '{"result":{"total":%s,"data":%s}}' % (total,physicals)
+            return HttpResponse(response)
+        else:
+            virtuals = HostVirtual.objects.select_related('Manage_IP').all().order_by('Manage_IP')
+            total = virtuals.count()
+            virtuals = serializers.serialize("json",virtuals,use_natural_keys=True)
+            response = '{"result":{"total":%s,"data":%s}}' % (total,virtuals)
+            return HttpResponse(response)
+            
+    except Exception,e:
+        result = {'result':{'status':0,'info':str(e)}}
+
+
+@csrf_exempt
+def search(request):
+    json_str = request.body
+    data = json.loads(json_str)
+    token = data['token']
+    try:
+        result = Token.objects.get(key=token)
+        user_id = result.user_id
+        request.user = User.objects.get(id=user_id)
+    except Token.DoesNotExist:
+        result = {'result':'auth failed'}
+        response = json.dumps(result)
+        return HttpResponse(response)
+    q = data['params'] 
+    solr_url="http://127.0.0.1:8983/solr/cmdb/select?q=" + urllib.quote(q.encode('utf-8')) + "&wt=json&indent=true"
+    query_set =  urllib.urlopen(solr_url).read()
+    #items = json.loads(query_set)
+    return HttpResponse(query_set)

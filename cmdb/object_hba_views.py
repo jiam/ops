@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from cmdb.models import HBA 
+from cmdb.models import HostPhysical
 import json
 import urllib
 import cmdb_log
@@ -82,6 +83,10 @@ def hba_del(request):
     ids = data['id'].split(',')
     for del_id in ids:
         i = HBA.objects.filter(id=del_id)
+        h = HostPhysical.objects.filter(hba=del_id)
+        if len(h):
+            json_r = json.dumps({"result":"include hosts"})
+            return  HttpResponse(json_r)
         cmdb_log.log_deletion(request,i[0],i[0].HBA_Type,data)
         i.delete()
     json_r = json.dumps({"result":"delete sucess"})

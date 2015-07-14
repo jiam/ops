@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from cmdb.models import Kernel
+from cmdb.models import HostPhysical
 import json
 import urllib
 import cmdb_log
@@ -81,6 +82,12 @@ def kernel_del(request):
     ids = data['id'].split(',')
     for del_id in ids:
         i = Kernel.objects.filter(id=del_id)
+        h = HostPhysical.objects.filter(kernel=del_id)
+        v = VirtualPhysical.objects.filter(os=del_id)
+        n = len(h)+len(v)
+        if n:
+            json_r = json.dumps({"result":"include hosts"})
+            return  HttpResponse(json_r)
         cmdb_log.log_deletion(request,i[0],i[0].Kernel_Name,data)
         i.delete()
     json_r = json.dumps({"result":"delete sucess"})

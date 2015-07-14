@@ -105,6 +105,7 @@
                         success: function (text) {
                             o = mini.decode(text);
                             if (o.result == 'no permission') alert("没有权限!!");
+                            if (o.result == 'include hosts') alert("该对象下还有主机!!");
                             grid.reload();
                         },
                         error: function () {

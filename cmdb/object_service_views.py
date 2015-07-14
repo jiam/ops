@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from cmdb.models import Service
+from cmdb.models import HostPhysical
 import json
 import urllib
 import cmdb_log
@@ -81,6 +82,12 @@ def service_del(request):
     ids = data['id']
     for del_id in ids:
         i = Service.objects.filter(id=del_id)
+        h = HostPhysical.objects.filter(service=del_id)
+        v = VirtualPhysical.objects.filter(os=del_id)
+        n = len(h)+len(v)
+        if n:
+            json_r = json.dumps({"result":"include hosts"})
+            return  HttpResponse(json_r)
         cmdb_log.log_deletion(request,i[0],i[0].Service_Name,data)
         i.delete()
     json_r = json.dumps({"result":"delete sucess"})
