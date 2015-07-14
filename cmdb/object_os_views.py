@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from cmdb.models import OS
 from cmdb.models import HostPhysical
+from cmdb.models import HostVirtual
 import json
 import urllib
 import cmdb_log
@@ -84,7 +85,7 @@ def os_del(request):
     for del_id in ids:
         i = OS.objects.filter(id=del_id)
         h = HostPhysical.objects.filter(os=del_id)
-        v = VirtualPhysical.objects.filter(os=del_id)
+        v = HostVirtual.objects.filter(os=del_id)
         n = len(h)+len(v)
         if n:
             json_r = json.dumps({"result":"include hosts"})
