@@ -80,7 +80,7 @@ def service_del(request):
         return HttpResponse(json_r)
     json_str =request.body
     data = json.loads(json_str)
-    ids = data['id']
+    ids = data['id'].split(',')
     for del_id in ids:
         i = Service.objects.filter(id=del_id)
         h = HostPhysical.objects.filter(service=del_id)
