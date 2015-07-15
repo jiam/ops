@@ -220,7 +220,7 @@ class HostVirtual(models.Model):
     Change_Info = models.CharField(blank=True,null=True,max_length=100)
     Use_Info = models.CharField(blank=True,null=True,max_length=100)
     Use_Period = models.CharField(blank=True,null=True,max_length=100)
-    Deploy_Path = models.CharField(blank=True,null=True,max_length=60)
+    Deploy_Path = models.CharField(blank=True,null=True,max_length=120)
     Up_Time = models.DateField(blank=True,null=True)
     Status = models.IntegerField(blank=True,null=True)
     Remarks =  models.CharField(blank=True,null=True,max_length=100)
