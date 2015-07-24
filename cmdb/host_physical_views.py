@@ -25,9 +25,11 @@ def physical_get(request):
         start = int(pageIndex)*int(pageSize)
         stop = int(pageIndex)*int(pageSize) + int(pageSize)
         if sortOrder == 'asc':
-            physicals = HostPhysical.objects.select_related('Manage_IP').all().order_by(sortField)
+            #physicals = HostPhysical.objects.select_related('Manage_IP').all().order_by(sortField)
+            physicals = HostPhysical.objects.all().order_by(sortField)
         else:
-            physicals = HostPhysical.objects.select_related('Manage_IP').all().order_by('-'+sortField)
+            #physicals = HostPhysical.objects.select_related('Manage_IP').all().order_by('-'+sortField)
+            physicals = HostPhysical.objects.all().order_by('-'+sortField)
         for physical in physicals:
             physical_d = {'id':physical.id,
                           'HostName':physical.HostName,

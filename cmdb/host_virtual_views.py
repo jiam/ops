@@ -23,9 +23,9 @@ def virtual_get(request):
         start = int(pageIndex)*int(pageSize)
         stop = int(pageIndex)*int(pageSize) + int(pageSize)
         if sortOrder == 'asc':
-            virtuals = HostVirtual.objects.select_related('Manage_IP').all().order_by(sortField)
+            virtuals = HostVirtual.objects.all().order_by(sortField)
         else:
-            virtuals = HostVirtual.objects.select_related('Manage_IP').all().order_by('-'+sortField)
+            virtuals = HostVirtual.objects.all().order_by('-'+sortField)
         for virtual in virtuals:
             virtual_d = {'id':virtual.id,
                           'HostName':virtual.HostName,
