@@ -5,4 +5,5 @@
     { "id": "HostName", "text": "主机名" },
     { "id": "SN", "text": "序列号" },
     { "id": "Asset_SN", "text": "资产编号" },
+    { "id": "User", "text": "用户" },
 ]
