@@ -1,8 +1,8 @@
 [
-    { "id": "ip", "text": "管理IP" },
-    { "id": "vip", "text": "VIP" },
-    { "id": "nas_ip", "text": "NAS IP" },
-    { "id": "hostname", "text": "主机名" },
-    { "id": "sn", "text": "序列号" },
-    { "id": "asset_sn", "text": "资产编号" },
+    { "id": "Manage_IP", "text": "管理IP" },
+    { "id": "VIP", "text": "VIP" },
+    { "id": "NAS_IP", "text": "NAS IP" },
+    { "id": "HostName", "text": "主机名" },
+    { "id": "SN", "text": "序列号" },
+    { "id": "Asset_SN", "text": "资产编号" },
 ]

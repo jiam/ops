@@ -34,21 +34,6 @@ def department_get(request):
         json_r = json.dumps(department_r)
     return HttpResponse(json_r)
 
-@csrf_exempt
-def department_search(request):
-    if not request.user.is_authenticated():
-        return HttpResponseRedirect("/ops/cmdb/html/login.html")
-    json_str =request.body
-    data = json.loads(json_str)
-    key = data['key']
-    if key == 'id':
-        department_r = list(Department.objects.filter(id=data['id']).values())[0]
-        json_r = json.dumps(department_r)
-    if key == 'Department_Name':
-        department_r = list(Department.objects.filter(Department_Name__contains=data['Department_Name']).values())[0]
-        json_r = json.dumps(department_r)
-    return HttpResponse(json_r)
-
 @csrf_exempt  
 def department_save(request):
     if not request.user.is_authenticated():
@@ -62,10 +47,13 @@ def department_save(request):
     if  data['id']:
         i = Department.objects.filter(id=data['id'])
         message = cmdb_log.cmp(list(i.values())[0],data)
-        i.update(Department_Name = data['Department_Name'],Department_Contact = data['Department_Contact'])
+        data.pop('id')
+        i.update(**data)
         cmdb_log.log_change(request,i[0],data['Department_Name'],message)
     else:
-        i = Department(Department_Name = data['Department_Name'],Department_Contact = data['Department_Contact'])
+        #i = Department(Department_Name = data['Department_Name'],Department_Contact = data['Department_Contact'])
+        data.pop('id')
+        i = Department(**data)
         i.save()
         cmdb_log.log_addition(request,i,data['Department_Name'],data)
     json_r = json.dumps({"result":"save sucess"})

@@ -221,7 +221,7 @@
                 $.ajax({
                     url: "/cmdb/host/virtual/get",
                     type: 'post',
-                    data: {'key':'id','id':data.id},
+                    data: { key:'id',id:data.id },
                     cache: false,
                     success: function (text) {
                        var o = mini.decode(text);

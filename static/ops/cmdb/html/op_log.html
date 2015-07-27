@@ -35,7 +35,7 @@
             </table>           
         </div>
     </div>
-    <div id="datagrid1" class="mini-datagrid" style="width:1100px;height:280px;" allowResize="true"
+    <div id="datagrid1" class="mini-datagrid" style="width:1100px;height:520px;" allowResize="true"
         url="/cmdb/oplog/get"  idField="id" multiSelect="true" 
     >
         <div property="columns">
@@ -45,7 +45,7 @@
             <div field="content_type" width="40" headerAlign="center"  allowSort="true">对象</div>
             <div field="object_repr" width="40" headerAlign="center"  allowSort="true">实例</div>
             <div field="action_flag" width="40" headerAlign="center"  allowSort="true" renderer="onOPRenderer">操作</div>
-            <div field="change_message" width="340" headerAlign="center"  allowSort="true">消息</div>
+            <div field="change_message" width="300" headerAlign="center"  allowSort="true">消息</div>
             <div field="action_time" width="120" headerAlign="center"  allowSort="true">时间</div>
         </div>
     </div>
@@ -55,7 +55,7 @@
         mini.parse();
 
         var grid = mini.get("datagrid1");
-        grid.load();
+        grid.load({pageSize:20});
         grid.sortBy("action_time","desc");
 
         function search() {

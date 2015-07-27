@@ -13,9 +13,9 @@ from django.contrib import auth
 def dashboard_host(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect("/ops/cmdb/html/login.html")
-    physicals = HostPhysical.objects.all()
-    virtuals = HostVirtual.objects.all()
-    data = {'x':["物理主机","虚拟主机"],'y':[len(physicals),len(virtuals)]}
+    physicals = HostPhysical.objects.count()
+    virtuals = HostVirtual.objects.count()
+    data = {'x':["物理主机","虚拟主机"],'y':[physicals,virtuals]}
     j_data = json.dumps(data)
     return HttpResponse(j_data)
 

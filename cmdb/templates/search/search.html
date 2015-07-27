@@ -35,7 +35,8 @@
       <td>{{ hostvirtual.physical_host_ip | first }} </td>
       <td>{{ hostvirtual.user | first }} </td>
       <td>{{ hostphysical.useinfo | first }} </td>
-      <td><button onclick=details({{ hostvirtual.django_id }},"host_virtual_details.html")>详细信息</button> </td>
+      <td><button onclick=details({{ hostvirtual.django_id | first}},"host_virtual_details.html")>详细信息</button> </td>
+      <td><button onclick=edit({{ hostvirtual.django_id | first}},"host_virtual_window.html")>编辑</button> </td>
     </tr>
     {% endfor %}
   </tbody>
@@ -65,7 +66,8 @@
       <td>{{ hostphysical.user | first }} </td>
       <td>{{ hostphysical.rac_ip | first }} </td>
       <td>{{ hostphysical.useinfo | first }} </td>
-      <td><button onclick=details({{ hostphysical.django_id }},"host_physical_details.html")>详细信息</button> </td>
+      <td><button onclick=details({{ hostphysical.django_id | first }},"host_physical_details.html")>详细信息</button> </td>
+      <td><button onclick=edit({{ hostphysical.django_id | first }},"host_physical_window.html")>编辑</button> </td>
     </tr>
     {% endfor %}
   </tbody>
@@ -76,7 +78,7 @@
 function details(django_id,html) {
 
             id = django_id;
-            html = html
+            html = html;
             if (id) {
                 mini.open({
                     url: "/ops/cmdb/html/" + html,
@@ -92,6 +94,25 @@ function details(django_id,html) {
 
             } else {
                 alert("请选中一条记录");
+            }
+        }
+function edit(django_id,html) {
+
+            id = django_id;
+            html = html;
+            if (id) {
+                mini.open({
+                    url: "/ops/cmdb/html/" + html,
+                    title: "编辑", width: 700, height: 530,
+                    onload: function () {
+                        var iframe = this.getIFrameEl();
+                        var data = { "action": "edit", "id": id };
+                        iframe.contentWindow.SetData(data);
+
+                    },
+
+                });
+
             }
         }
 </script>

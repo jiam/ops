@@ -14,18 +14,18 @@ def virtual_get(request):
         json_r = json.dumps({"result":"no login"})
         return HttpResponse(json_r)
     key = request.POST.get('key','all')
+    pageIndex = request.POST.get('pageIndex',0)
+    pageSize = request.POST.get('pageSize',100)
+    sortField = request.POST.get('sortField','Manage_IP')
+    sortOrder = request.POST.get('sortOrder','asc')
+    start = int(pageIndex)*int(pageSize)
+    stop = int(pageIndex)*int(pageSize) + int(pageSize)
     virtual_list = []
     if key == 'all':
-        pageIndex = request.POST.get('pageIndex',0)
-        pageSize = request.POST.get('pageSize',100)
-        sortField = request.POST.get('sortField','Manage_IP')
-        sortOrder = request.POST.get('sortOrder','asc')
-        start = int(pageIndex)*int(pageSize)
-        stop = int(pageIndex)*int(pageSize) + int(pageSize)
         if sortOrder == 'asc':
-            virtuals = HostVirtual.objects.all().order_by(sortField)
+            virtuals = HostVirtual.objects.order_by(sortField)[start:stop]
         else:
-            virtuals = HostVirtual.objects.all().order_by('-'+sortField)
+            virtuals = HostVirtual.objects.order_by('-'+sortField)[start:stop]
         for virtual in virtuals:
             virtual_d = {'id':virtual.id,
                           'HostName':virtual.HostName,
@@ -38,7 +38,7 @@ def virtual_get(request):
                           'SSH_Port':virtual.SSH_Port,
                           }            
             virtual_list.append(virtual_d)
-        data = {"total":len(virtual_list),"data":virtual_list[start:stop]}
+        data = {"total":HostVirtual.objects.count(),"data":virtual_list}
         json_r = json.dumps(data)
     elif key == 'id':
         id = request.POST.get('id')
@@ -69,9 +69,12 @@ def virtual_get(request):
                      'Remarks': virtual.Remarks
                       }            
         json_r = json.dumps(virtual_d)
-    elif key == 'hostname':
-        hostname = request.POST.get('search')
-        virtuals= HostVirtual.objects.filter(HostName__contains=hostname)
+    else: 
+        
+        search = request.POST.get('search')
+        params = {key:search}
+        queryset= HostVirtual.objects.filter(**params)
+        virtuals= queryset[start:stop]
         for virtual in virtuals:
             virtual_d = {'id':virtual.id,
                           'HostName':virtual.HostName,
@@ -84,75 +87,7 @@ def virtual_get(request):
                           'SSH_Port':virtual.SSH_Port,
                           }            
             virtual_list.append(virtual_d)
-        data = {"total":len(virtual_list),"data":virtual_list}
-        json_r = json.dumps(data)
-    elif key == 'physical_host_ip':
-        physical_host_ip = request.POST.get('search')
-        virtuals= HostVirtual.objects.filter(Physical_Host_IP__contains=physical_host_ip)
-        for virtual in virtuals:
-            virtual_d = {'id':virtual.id,
-                          'HostName':virtual.HostName,
-                          'Status':virtual.Status,
-                          'Use_Info':virtual.Use_Info,
-                          'User':virtual.User,
-                          'Department_id':virtual.department.Department_Name,
-                          'Manage_IP':virtual.Manage_IP,
-                          'Physical_Host_IP': virtual.Physical_Host_IP,
-                          'SSH_Port':virtual.SSH_Port,
-                          }            
-            virtual_list.append(virtual_d)
-        data = {"total":len(virtual_list),"data":virtual_list}
-        json_r = json.dumps(data)
-    elif key == 'ip':
-        ip = request.POST.get('search')
-        virtuals= HostVirtual.objects.filter(Manage_IP=ip)
-        for virtual in virtuals:
-            virtual_d = {'id':virtual.id,
-                          'HostName':virtual.HostName,
-                          'Status':virtual.Status,
-                          'Use_Info':virtual.Use_Info,
-                          'User':virtual.User,
-                          'Department_id':virtual.department.Department_Name,
-                          'Manage_IP':virtual.Manage_IP,
-                          'Physical_Host_IP': virtual.Physical_Host_IP,
-                          'SSH_Port':virtual.SSH_Port,
-                          }            
-            virtual_list.append(virtual_d)
-        data = {"total":len(virtual_list),"data":virtual_list}
-        json_r = json.dumps(data)
-    elif key == 'vip':
-        vip = request.POST.get('search')
-        virtuals= HostVirtual.objects.filter(VIP=vip)
-        for virtual in virtuals:
-            virtual_d = {'id':virtual.id,
-                          'HostName':virtual.HostName,
-                          'Status':virtual.Status,
-                          'Use_Info':virtual.Use_Info,
-                          'User':virtual.User,
-                          'Department_id':virtual.department.Department_Name,
-                          'Manage_IP':virtual.Manage_IP,
-                          'Physical_Host_IP': virtual.Physical_Host_IP,
-                          'SSH_Port':virtual.SSH_Port,
-                          }            
-            virtual_list.append(virtual_d)
-        data = {"total":len(virtual_list),"data":virtual_list}
-        json_r = json.dumps(data)
-    elif key == 'nas_ip':
-        nas_ip = request.POST.get('search')
-        virtuals= HostVirtual.objects.filter(NAS_IP=nas_ip)
-        for virtual in virtuals:
-            virtual_d = {'id':virtual.id,
-                          'HostName':virtual.HostName,
-                          'Status':virtual.Status,
-                          'Use_Info':virtual.Use_Info,
-                          'User':virtual.User,
-                          'Department_id':virtual.department.Department_Name,
-                          'Manage_IP':virtual.Manage_IP,
-                          'Physical_Host_IP': virtual.Physical_Host_IP,
-                          'SSH_Port':virtual.SSH_Port,
-                          }            
-            virtual_list.append(virtual_d)
-        data = {"total":len(virtual_list),"data":virtual_list}
+        data = {"total":queryset.count(),"data":virtual_list}
         json_r = json.dumps(data)
     return HttpResponse(json_r)
 

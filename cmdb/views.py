@@ -144,9 +144,9 @@ def get_op_log(request):
     log_list = []
     if key == 'all':
         if sortOrder == 'asc':
-            logs =LogEntry.objects.all().order_by(sortField)
+            logs =LogEntry.objects.order_by(sortField)[start:stop]
         else:
-            logs = LogEntry.objects.all().order_by('-'+sortField)
+            logs = LogEntry.objects.order_by('-'+sortField)[start:stop]
         for log in logs:
             user = User.objects.get(id=log.user_id).username
             action_time = log.action_time+datetime.timedelta(hours=8)
@@ -159,7 +159,7 @@ def get_op_log(request):
                  'action_time':action_time.strftime('%Y-%m-%d  %H:%M:%S')
                 }
             log_list.append(log_d)
-        data = {"total":len(log_list),"data":log_list[start:stop]}
+        data = {"total":LogEntry.objects.count(),"data":log_list}
         json_r = json.dumps(data) 
     if key == 'user':
         user = request.POST['search']

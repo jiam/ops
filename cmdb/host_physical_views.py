@@ -10,26 +10,25 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt  
-@cache_page(60 * 15)
+#@cache_page(60 * 15)
 def physical_get(request):
     if not request.user.is_authenticated():
         json_r = json.dumps({"result":"no login"})
         return HttpResponse(json_r)
     key = request.POST.get('key','all')
+    pageIndex = request.POST.get('pageIndex',0)
+    pageSize = request.POST.get('pageSize',100)
+    sortField = request.POST.get('sortField','SN')
+    sortOrder = request.POST.get('sortOrder','asc')
+    start = int(pageIndex)*int(pageSize)
+    stop = int(pageIndex)*int(pageSize) + int(pageSize)
     physical_list = []
+    #分页返回全部
     if key == 'all':
-        pageIndex = request.POST.get('pageIndex',0)
-        pageSize = request.POST.get('pageSize',100)
-        sortField = request.POST.get('sortField','SN')
-        sortOrder = request.POST.get('sortOrder','asc')
-        start = int(pageIndex)*int(pageSize)
-        stop = int(pageIndex)*int(pageSize) + int(pageSize)
         if sortOrder == 'asc':
-            #physicals = HostPhysical.objects.select_related('Manage_IP').all().order_by(sortField)
-            physicals = HostPhysical.objects.all().order_by(sortField)
+            physicals = HostPhysical.objects.order_by(sortField)[start:stop]
         else:
-            #physicals = HostPhysical.objects.select_related('Manage_IP').all().order_by('-'+sortField)
-            physicals = HostPhysical.objects.all().order_by('-'+sortField)
+            physicals = HostPhysical.objects.order_by('-'+sortField)[start:stop]
         for physical in physicals:
             physical_d = {'id':physical.id,
                           'HostName':physical.HostName,
@@ -45,9 +44,9 @@ def physical_get(request):
                           'Rack_id':physical.rack.Rack_Name,
                           }            
             physical_list.append(physical_d)
-        data = {"total":len(physical_list),"data":physical_list[start:stop]}
+        data = {"total":HostPhysical.objects.count(),"data":physical_list}
         json_r = json.dumps(data)
-    elif key == 'id':
+    elif key == 'id':  #返回编辑信息
         id = request.POST.get('id')
         physical = HostPhysical.objects.get(id=id)
         physical_d = {'id':physical.id,
@@ -96,9 +95,11 @@ def physical_get(request):
                       'Remarks':physical.Remarks
                       }            
         json_r = json.dumps(physical_d)
-    elif key == 'hostname':
-        hostname = request.POST.get('search')
-        physicals= HostPhysical.objects.filter(HostName=hostname)
+    else:      #按条件查找
+        search = request.POST.get('search')
+        params = { key:search}
+        queryset= HostPhysical.objects.filter(**params)
+        physicals= queryset[start:stop]
         for physical in physicals:
             physical_d = {'id':physical.id,
                           'HostName':physical.HostName,
@@ -114,107 +115,7 @@ def physical_get(request):
                           'Rack_id':physical.rack.Rack_Name,
                           }            
             physical_list.append(physical_d)
-        data = {"total":len(physical_list),"data":physical_list}
-        json_r = json.dumps(data)
-    elif key == 'sn':
-        sn = request.POST.get('search')
-        physicals= HostPhysical.objects.filter(SN=sn)
-        for physical in physicals:
-            physical_d = {'id':physical.id,
-                          'HostName':physical.HostName,
-                          'Status':physical.Status,
-                          'Asset_SN':physical.Asset_SN,
-                          'SN':physical.SN,
-                          'Vendor_id':physical.vendor.Vendor_Name,
-                          'Service_id':physical.service.Service_Name,
-                          'Model_id':physical.model.Model_Name,
-                          'Manage_IP':physical.Manage_IP,
-                          'RAC_IP':physical.RAC_IP,
-                          'IDC_id':physical.idc.IDC_Name,
-                          'Rack_id':physical.rack.Rack_Name,
-                          }            
-            physical_list.append(physical_d)
-        data = {"total":len(physical_list),"data":physical_list}
-        json_r = json.dumps(data)
-    elif key == 'asset_sn':
-        asset_sn = request.POST.get('search')
-        physicals= HostPhysical.objects.filter(Asset_SN=asset_sn)
-        for physical in physicals:
-            physical_d = {'id':physical.id,
-                          'HostName':physical.HostName,
-                          'Status':physical.Status,
-                          'Asset_SN':physical.Asset_SN,
-                          'SN':physical.SN,
-                          'Vendor_id':physical.vendor.Vendor_Name,
-                          'Service_id':physical.service.Service_Name,
-                          'Model_id':physical.model.Model_Name,
-                          'Manage_IP':physical.Manage_IP,
-                          'RAC_IP':physical.RAC_IP,
-                          'IDC_id':physical.idc.IDC_Name,
-                          'Rack_id':physical.rack.Rack_Name,
-                          }            
-            physical_list.append(physical_d)
-        data = {"total":len(physical_list),"data":physical_list}
-        json_r = json.dumps(data)
-    elif key == 'ip':
-        ip = request.POST.get('search')
-        physicals= HostPhysical.objects.filter(Manage_IP=ip)
-        for physical in physicals:
-            physical_d = {'id':physical.id,
-                          'HostName':physical.HostName,
-                          'Status':physical.Status,
-                          'Asset_SN':physical.Asset_SN,
-                          'SN':physical.SN,
-                          'Vendor_id':physical.vendor.Vendor_Name,
-                          'Service_id':physical.service.Service_Name,
-                          'Model_id':physical.model.Model_Name,
-                          'Manage_IP':physical.Manage_IP,
-                          'RAC_IP':physical.RAC_IP,
-                          'IDC_id':physical.idc.IDC_Name,
-                          'Rack_id':physical.rack.Rack_Name,
-                          }            
-            physical_list.append(physical_d)
-        data = {"total":len(physical_list),"data":physical_list}
-        json_r = json.dumps(data)
-    elif key == 'vip':
-        vip = request.POST.get('search')
-        physicals= HostPhysical.objects.filter(VIP=vip)
-        for physical in physicals:
-            physical_d = {'id':physical.id,
-                          'HostName':physical.HostName,
-                          'Status':physical.Status,
-                          'Asset_SN':physical.Asset_SN,
-                          'SN':physical.SN,
-                          'Vendor_id':physical.vendor.Vendor_Name,
-                          'Service_id':physical.service.Service_Name,
-                          'Model_id':physical.model.Model_Name,
-                          'Manage_IP':physical.Manage_IP,
-                          'RAC_IP':physical.RAC_IP,
-                          'IDC_id':physical.idc.IDC_Name,
-                          'Rack_id':physical.rack.Rack_Name,
-                          }            
-            physical_list.append(physical_d)
-        data = {"total":len(physical_list),"data":physical_list}
-        json_r = json.dumps(data)
-    elif key == 'nas_ip':
-        nas_ip = request.POST.get('search')
-        physicals= HostPhysical.objects.filter(NAS_IP=nas_ip)
-        for physical in physicals:
-            physical_d = {'id':physical.id,
-                          'HostName':physical.HostName,
-                          'Status':physical.Status,
-                          'Asset_SN':physical.Asset_SN,
-                          'SN':physical.SN,
-                          'Vendor_id':physical.vendor.Vendor_Name,
-                          'Service_id':physical.service.Service_Name,
-                          'Model_id':physical.model.Model_Name,
-                          'Manage_IP':physical.Manage_IP,
-                          'RAC_IP':physical.RAC_IP,
-                          'IDC_id':physical.idc.IDC_Name,
-                          'Rack_id':physical.rack.Rack_Name,
-                          }            
-            physical_list.append(physical_d)
-        data = {"total":len(physical_list),"data":physical_list}
+        data = {"total":queryset.count(),"data":physical_list}
         json_r = json.dumps(data)
     return HttpResponse(json_r)
 
@@ -273,55 +174,6 @@ def physical_get_details(request,id):
                   'Remarks':physical.Remarks
                   }            
     json_r = json.dumps(physical_d)
-    return HttpResponse(json_r)
-
-@csrf_exempt
-def physical_search(request):
-    if not request.user.is_authenticated():
-        return HttpResponseRedirect("/ops/cmdb/html/login.html")
-    json_str =request.body
-    data = json.loads(json_str)
-    physical_list = []
-    key = data['key']
-    search = data['search']
-    if key == 'hostname':
-        physicals= HostPhysical.objects.filter(HostName__contains=search)
-        for physical in physicals:
-            physical_d = {'id':physical.id,
-                          'HostName':physical.HostName,
-                          'Status':physical.Status,
-                          'Asset_SN':physical.Asset_SN,
-                          'SN':physical.SN,
-                          'Vendor_id':physical.vendor.Vendor_Name,
-                          'Service_id':physical.service.Service_Name,
-                          'Model_id':physical.model.Model_Name,
-                          'Manage_IP':physical.Manage_IP,
-                          'RAC_IP':physical.RAC_IP,
-                          'IDC_id':physical.idc.IDC_Name,
-                          'Rack_id':physical.rack.Rack_Name,
-                          }            
-            physical_list.append(physical_d)
-        data = {"total":len(physical_list),"data":physical_list}
-        json_r = json.dumps(data)
-    if key == 'ip':
-        physicals= HostPhysical.objects.filter(Manage_IP=key)
-        for physical in physicals:
-            physical_d = {'id':physical.id,
-                          'HostName':physical.HostName,
-                          'Status':physical.Status,
-                          'Asset_SN':physical.Asset_SN,
-                          'SN':physical.SN,
-                          'Vendor_id':physical.vendor.Vendor_Name,
-                          'Service_id':physical.service.Service_Name,
-                          'Model_id':physical.model.Model_Name,
-                          'Manage_IP':physical.Manage_IP,
-                          'RAC_IP':physical.RAC_IP,
-                          'IDC_id':physical.idc.IDC_Name,
-                          'Rack_id':physical.rack.Rack_Name,
-                          }            
-            physical_list.append(physical_d)
-        data = {"total":len(physical_list),"data":physical_list}
-        json_r = json.dumps(data)
     return HttpResponse(json_r)
 
 @csrf_exempt  
