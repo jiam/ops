@@ -62,6 +62,42 @@ $(document).ready(function() {
         var chart = new Highcharts.Chart(options);
     });
 });
+
+
+
+$(document).ready(function() {
+    var options = {
+        title: {
+            text: '厂商'
+        },
+        chart: {
+            renderTo: 'container3',
+            type: 'pie'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.2f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: '数量',
+            data: []
+        }]
+    };
+ var url =  "/cmdb/dashboard/vendor";
+    $.getJSON(url,  function(data) {
+        options.series[0].data = data 
+        var chart = new Highcharts.Chart(options);
+    });
+});
     
 
 </script>
@@ -72,6 +108,8 @@ $(document).ready(function() {
         <div id = "container" class="span6">
         </div>
         <div id = "container2"class="span6">
+       </div>
+        <div id = "container3"class="span6">
        </div>
   </div>
 </body>

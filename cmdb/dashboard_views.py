@@ -34,6 +34,20 @@ def dashboard_os(request):
     j_data = json.dumps(data)
     return HttpResponse(j_data)
         
+def dashboard_vendor(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect("/ops/cmdb/html/login.html")
+    data = []
+    vendors = list(HostPhysical.objects.values('vendor').annotate(dcount=Count('vendor')))
+    count = HostPhysical.objects.count()
+    for vendor in  vendors:
+        vendor_id = vendor['vendor']
+        vendor_name =  Vendor.objects.get(id=vendor_id).Vendor_Name
+        #percent = os['dcount'] / count
+        percent = vendor['dcount']
+        data.append([vendor_name, percent])
+    j_data = json.dumps(data)
+    return HttpResponse(j_data)
         
         
     
