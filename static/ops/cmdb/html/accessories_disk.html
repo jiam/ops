@@ -29,6 +29,7 @@
                         <a class="mini-button" iconCls="icon-add" onclick="add()">增加</a>
                         <a class="mini-button" iconCls="icon-add" onclick="edit()">编辑</a>
                         <a class="mini-button" iconCls="icon-remove" onclick="remove()">删除</a>       
+                        <a class="mini-button" iconCls="icon-add" onclick="copy()">复制</a>
                     </td>
                     <td style="white-space:nowrap;">
                         <input id="key" class="mini-combobox" url="../data/disk_search.txt" />
@@ -115,6 +116,31 @@
                     grid.loading("操作中，请稍后......");
                     $.ajax({
                         url: "/cmdb/accessories/disk/del",
+                        type: "post",
+                        data: id,
+                        success: function (text) {
+                            o = mini.decode(text);
+                            if (o.result == 'no permission') alert("没有权限!!");
+                            grid.reload();
+                        },
+                        error: function () {
+                        }
+                    });
+                }
+            } else {
+                alert("请选中一条记录");
+            }
+        }
+        function copy() {
+            
+            var rows = grid.getSelecteds();
+            if (rows.length > 0) {
+                if (confirm("确定复制选中记录？")) {
+                    var r = rows[0];
+                    var id = mini.encode({'id':r.id});
+                    grid.loading("操作中，请稍后......");
+                    $.ajax({
+                        url: "/cmdb/accessories/disk/copy",
                         type: "post",
                         data: id,
                         success: function (text) {

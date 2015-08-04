@@ -140,3 +140,25 @@ def memory_del(request):
         i.delete()
     json_r = json.dumps({"result":"delete sucess"})
     return HttpResponse(json_r)
+
+
+@csrf_exempt
+def memory_copy(request):
+    if not request.user.is_authenticated():
+        json_r = json.dumps({"result":"no login"})
+        return HttpResponse(json_r)
+    elif not request.user.has_perm('cmdb.change_accessories_memory'):
+        json_r = json.dumps({"result":"no permission"})
+        return HttpResponse(json_r)
+    json_str =request.body
+    data = json.loads(json_str)
+    copy_id = data['id']
+    source = Accessories_Memory.objects.filter(id=copy_id)
+    mid = source.values()[0]
+    mid.pop('id')
+    mid['SN']= mid['SN']+'copy'
+    dest = Accessories_Memory(**mid)
+    cmdb_log.log_addition(request,dest,dest.SN,data)
+    dest.save()
+    json_r = json.dumps({"result":"copy sucess"})
+    return HttpResponse(json_r)
