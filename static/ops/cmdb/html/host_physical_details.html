@@ -316,10 +316,10 @@
                        $("#RAID_id").html(o.RAID_id);
                        $("#HBA_id").html(o.HBA_id);
                        $("#HBA_Number").html(o.HBA_Number);
-                       $("#PCIE_id").html(o.HBA_id);
-                       $("#PCIE_Number").html(o.HBA_Number);
-                       $("#NIC_id").html(o.HBA_id);
-                       $("#NIC_Number").html(o.HBA_Number);
+                       $("#PCIE_id").html(o.PCIE_id);
+                       $("#PCIE_Number").html(o.PCIE_Number);
+                       $("#NIC_id").html(o.NIC_id);
+                       $("#NIC_Number").html(o.NIC_Number);
                        $("#Zone_id").html(o.Zone_id);
                        $("#Purchasing_Time").html(o.Purchasing_Time);
                        $("#Up_Time").html(o.Up_Time);
@@ -343,10 +343,19 @@
                          $("#RAID_Level").html("RAID 1");
                          }
                        else if (o.RAID_Level == 3) {
-                         $("#RAID_Level").html("RAID 3");
+                         $("#RAID_Level").html("RAID 5");
                          }
                        else if (o.RAID_Level == 4) {
                          $("#RAID_Level").html("RAID 10");
+                         }
+                       else if (o.RAID_Level == 5) {
+                         $("#RAID_Level").html("RAID 1,RAID 5");
+                         }
+                       else if (o.RAID_Level == 6) {
+                         $("#RAID_Level").html("RAID 1,RAID 10");
+                         }
+                       else if (o.RAID_Level == 7) {
+                         $("#RAID_Level").html("RAID 6");
                          }
                        
                     }
