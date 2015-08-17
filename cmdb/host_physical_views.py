@@ -97,7 +97,7 @@ def physical_get(request):
         json_r = json.dumps(physical_d)
     else:      #按条件查找
         search = request.POST.get('search')
-        params = { key:search}
+        params = { key+'__startswith':search}
         queryset= HostPhysical.objects.filter(**params)
         physicals= queryset[start:stop]
         for physical in physicals:

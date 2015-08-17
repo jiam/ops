@@ -72,7 +72,7 @@ def virtual_get(request):
     else: 
         
         search = request.POST.get('search')
-        params = {key:search}
+        params = { key+'__startswith':search}
         queryset= HostVirtual.objects.filter(**params)
         virtuals= queryset[start:stop]
         for virtual in virtuals:
